@@ -1,8 +1,11 @@
+import DataList from "./comonents/DataList";
+import Paste from "./comonents/Paste";
 
 function App() {
   return (
-    <div>
-      App
+    <div className="box">
+      <Paste/>
+      <DataList/>
     </div>
   );
 }
