@@ -1,4 +1,4 @@
-function Data({ data,removeDataItem,index }) {
+function Data({ data,removeDataItem,index,copyDataItem }) {
   return (
     <li className="list-group-item textAndBtn">
       
@@ -15,7 +15,9 @@ function Data({ data,removeDataItem,index }) {
           <button type="button" className="btn btn-danger" onClick={()=>{removeDataItem(index)}}>
             Delete
           </button>
-          <button type="button" className="btn btn-success">
+          <button type="button" className="btn btn-success"
+          onClick={()=>{copyDataItem(index)}}
+          >
             Copy
           </button>
         </div>

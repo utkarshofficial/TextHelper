@@ -20,9 +20,14 @@ function DataList() {
     setDataList(newDataList);
   };
 
+  const copyDataItem = (index) =>{
+    navigator.clipboard.writeText(DataList[index]);
+  }
+
   const showData = DataList.map((data, i) => {
     return (
-      <Data data={data} key={i} index={i} removeDataItem={removeDataItem} />
+      <Data data={data} key={i} index={i} removeDataItem={removeDataItem}
+      copyDataItem={copyDataItem} />
     );
   });
 
