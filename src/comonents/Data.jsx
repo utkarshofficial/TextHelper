@@ -1,4 +1,4 @@
-function Data({ data }) {
+function Data({ data,removeDataItem,index }) {
   return (
     <li className="list-group-item textAndBtn">
       
@@ -12,7 +12,7 @@ function Data({ data }) {
           role="group"
           aria-label="Basic mixed styles example"
         >
-          <button type="button" className="btn btn-danger">
+          <button type="button" className="btn btn-danger" onClick={()=>{removeDataItem(index)}}>
             Delete
           </button>
           <button type="button" className="btn btn-success">

@@ -12,13 +12,15 @@ function DataList() {
     "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
   ];
 
-  const [DataList, setDataList] = React.useState(dataList);
+  let [DataList, setDataList] = React.useState(dataList);
 
   const removeDataItem = (index) => {
-    setDataList(DataList.splice(index, 1));
+    let newDataList = [...DataList];
+    newDataList.splice(index,1);
+    setDataList(newDataList);
   };
 
-  const showData = dataList.map((data, i) => {
+  const showData = DataList.map((data, i) => {
     return (
       <Data data={data} key={i} index={i} removeDataItem={removeDataItem} />
     );
@@ -26,7 +28,7 @@ function DataList() {
 
   return (
     <div className="card" style={{ width: "80%" }}>
-      <h5 class="card-header">Clipboard Data</h5>
+      <h5 className="card-header">Clipboard Data</h5>
       <ul className="list-group list-group-flush">{showData}</ul>
     </div>
   );
