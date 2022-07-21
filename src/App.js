@@ -1,6 +1,7 @@
-import React from 'react'
+import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
+import ShowToast from "./comonents/ShowToast";
 
 function App() {
   const ClipboardData = [
@@ -9,33 +10,61 @@ function App() {
     "3. item is the powerfull",
     "4. why is the playground window is stick around here",
     "5. item is the powerfull",
-    "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est."
+    "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
   ];
 
-  let [dataList, setDataList] = React.useState(ClipboardData);
+  const [dataList, setDataList] = React.useState(ClipboardData);
+
+  // for toast message copy or deleted
+  const [severity,setSeverity] = React.useState("success");
+
+  // copy the data to clipboard and show toast
+  const [copied, setCopied] = React.useState(false);
+
+  // saved removed data for undo it
+  const [undoData,setUndoData] = React.useState("");
 
   const removeDataItem = (index) => {
     let newDataList = [...dataList];
-    newDataList.splice(index,1);
+    setUndoData(newDataList.splice(index, 1));
     setDataList(newDataList);
+    setSeverity("warning");
+    showToast();
   };
 
-  const pasteDataItem = ()=>{
+  const undo = () =>{
     let newDataList = [...dataList];
-    navigator.clipboard.readText().then((text)=>{
+    newDataList.unshift(undoData);
+    setDataList(newDataList);
+    hideToast();
+  }
+
+  const pasteDataItem = () => {
+    let newDataList = [...dataList];
+    navigator.clipboard.readText().then((text) => {
       newDataList.unshift(text);
       setDataList(newDataList);
     });
-    console.log(dataList);
-  }
+  };
+
+  const showToast = () => {
+    setCopied(true);
+  };
+  
+  const hideToast = () => {
+    setSeverity("success");
+    setCopied(false);
+  };
 
   return (
     <div className="box">
-      <Paste pasteDataItem={pasteDataItem}/>
+      <Paste pasteDataItem={pasteDataItem} />
       <DataList
         dataList={dataList}
         removeDataItem={removeDataItem}
+        showToast={showToast}
       />
+      {copied ? <ShowToast severity={severity} hideToast={hideToast} undo={undo} />:null}
     </div>
   );
 }

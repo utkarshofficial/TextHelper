@@ -2,12 +2,12 @@ import React from "react";
 import "./DataList.scss";
 import Data from "./Data";
 
-function DataList( {dataList,removeDataItem,copyDataItem}) {
+function DataList( {dataList,removeDataItem,showToast}) {
   
 
   const showData = dataList.map((data, i) => {
     return (
-      <Data data={data} key={i} index={i} removeDataItem={removeDataItem}
+      <Data data={data} key={i} index={i} removeDataItem={removeDataItem} showToast={showToast}
       />
     );
   });

@@ -1,8 +1,8 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-function Data({ data, removeDataItem, index}) {
-  const [copied,setCopied] = React.useState(false);
+function Data({ data, removeDataItem, index, showToast}) {
+
   
   return (
     <li className="list-group-item textAndBtn">
@@ -23,8 +23,8 @@ function Data({ data, removeDataItem, index}) {
           >
             Delete
           </button>
-          <CopyToClipboard text={data} onCopy={()=>{setCopied(true)}}>
-            <button type="button" className="btn btn-success">
+          <CopyToClipboard text={data} onCopy={showToast}>
+            <button type="button" className="btn btn-success" onClick={()=>{showToast()}}>
               Copy
             </button>
           </CopyToClipboard>
