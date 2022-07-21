@@ -26,7 +26,7 @@ function App() {
 
   const removeDataItem = (index) => {
     let newDataList = [...dataList];
-    setUndoData(newDataList.splice(index, 1));
+    setUndoData(newDataList.splice(index, 1).toString());
     setDataList(newDataList);
     setSeverity("warning");
     showToast();
@@ -42,6 +42,18 @@ function App() {
   const pasteDataItem = () => {
     let newDataList = [...dataList];
     navigator.clipboard.readText().then((text) => {
+      // checking that if data already available 
+      // then don't add just remove and add again
+      let availIndex = newDataList.indexOf(text);
+      console.log(availIndex);
+      console.log(newDataList);
+      if(availIndex!=-1){
+        let availableData = newDataList.splice(availIndex,1).toString();
+        newDataList.unshift(availableData);
+        setDataList(newDataList);
+        return;
+      }
+      // if not available then simply add it
       newDataList.unshift(text);
       setDataList(newDataList);
     });
