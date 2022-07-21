@@ -8,7 +8,7 @@ function DataList( {dataList,removeDataItem,copyDataItem}) {
   const showData = dataList.map((data, i) => {
     return (
       <Data data={data} key={i} index={i} removeDataItem={removeDataItem}
-      copyDataItem={copyDataItem} />
+      />
     );
   });
 

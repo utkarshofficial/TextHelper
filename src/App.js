@@ -20,12 +20,6 @@ function App() {
     setDataList(newDataList);
   };
 
-  const copyDataItem = (index) => {
-    navigator.clipboard.writeText(dataList[index]);
-    console.log(index)
-    console.log(dataList)
-  };
-
   const pasteDataItem = ()=>{
     let newDataList = [...dataList];
     navigator.clipboard.readText().then((text)=>{
@@ -35,17 +29,12 @@ function App() {
     console.log(dataList);
   }
 
-  if(!navigator.clipboard){
-    alert("clipboard not available");
-  }
-  
   return (
     <div className="box">
       <Paste pasteDataItem={pasteDataItem}/>
       <DataList
         dataList={dataList}
         removeDataItem={removeDataItem}
-        copyDataItem={copyDataItem}
       />
     </div>
   );
