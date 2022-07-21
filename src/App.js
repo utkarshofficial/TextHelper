@@ -16,13 +16,13 @@ function App() {
   const [dataList, setDataList] = React.useState(ClipboardData);
 
   // for toast message copy or deleted
-  const [severity,setSeverity] = React.useState("success");
+  const [severity, setSeverity] = React.useState("success");
 
   // copy the data to clipboard and show toast
   const [copied, setCopied] = React.useState(false);
 
   // saved removed data for undo it
-  const [undoData,setUndoData] = React.useState("");
+  const [undoData, setUndoData] = React.useState("");
 
   const removeDataItem = (index) => {
     let newDataList = [...dataList];
@@ -32,37 +32,51 @@ function App() {
     showToast();
   };
 
-  const undo = () =>{
+  const undo = () => {
     let newDataList = [...dataList];
     newDataList.unshift(undoData);
     setDataList(newDataList);
     hideToast();
-  }
+  };
 
-  const pasteDataItem = () => {
+  const pasteDataItem = (pasteItem) => {
     let newDataList = [...dataList];
-    navigator.clipboard.readText().then((text) => {
-      // checking that if data already available 
-      // then don't add just remove and add again
-      let availIndex = newDataList.indexOf(text);
-      console.log(availIndex);
-      console.log(newDataList);
-      if(availIndex!=-1){
-        let availableData = newDataList.splice(availIndex,1).toString();
+
+    // pasted manually
+    if (!navigator.clipboard) {
+      let availIndex = newDataList.indexOf(pasteItem);
+      if (availIndex != -1) {
+        let availableData = newDataList.splice(availIndex, 1).toString();
         newDataList.unshift(availableData);
         setDataList(newDataList);
         return;
       }
       // if not available then simply add it
-      newDataList.unshift(text);
+      newDataList.unshift(pasteItem);
       setDataList(newDataList);
-    });
+    } else {
+      // paste by button
+      navigator.clipboard.readText().then((text) => {
+        // checking that if data already available
+        // then don't add just remove and add again
+        let availIndex = newDataList.indexOf(text);
+        if (availIndex != -1) {
+          let availableData = newDataList.splice(availIndex, 1).toString();
+          newDataList.unshift(availableData);
+          setDataList(newDataList);
+          return;
+        }
+        // if not available then simply add it
+        newDataList.unshift(text);
+        setDataList(newDataList);
+      });
+    }
   };
 
   const showToast = () => {
     setCopied(true);
   };
-  
+
   const hideToast = () => {
     setSeverity("success");
     setCopied(false);
@@ -76,7 +90,9 @@ function App() {
         removeDataItem={removeDataItem}
         showToast={showToast}
       />
-      {copied ? <ShowToast severity={severity} hideToast={hideToast} undo={undo} />:null}
+      {copied ? (
+        <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
+      ) : null}
     </div>
   );
 }

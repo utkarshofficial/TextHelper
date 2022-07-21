@@ -1,0 +1,30 @@
+.paste-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    margin: 10px 0 10px 0;
+    height: 30vh;
+    width: 80vw;
+    .paste-manual{
+        display: flex;
+        button{
+            padding: 14.5px;
+            margin-left: 2px;
+        }
+    }
+    .paste-btn{
+        height: 30vh;
+        width:
+         100%;
+    }
+}
+
+.footer{
+ position:fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
