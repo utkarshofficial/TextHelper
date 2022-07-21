@@ -25,7 +25,7 @@ function Paste({ pasteDataItem }) {
     <div className="paste-manual">
       <TextField
         className="data-input"
-        label="Outlined secondary"
+        label="Paste data here"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

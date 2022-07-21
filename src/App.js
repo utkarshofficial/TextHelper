@@ -28,7 +28,7 @@ function App() {
     let newDataList = [...dataList];
     setUndoData(newDataList.splice(index, 1).toString());
     setDataList(newDataList);
-    setSeverity("warning");
+    setSeverity("error");
     showToast();
   };
 
@@ -43,7 +43,7 @@ function App() {
     let newDataList = [...dataList];
 
     // pasted manually
-    if (!navigator.clipboard) {
+    if (!navigator.clipboard && pasteItem!='') {
       let availIndex = newDataList.indexOf(pasteItem);
       if (availIndex != -1) {
         let availableData = newDataList.splice(availIndex, 1).toString();
