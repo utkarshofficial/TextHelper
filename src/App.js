@@ -2,8 +2,19 @@ import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
+import { getDatabase, ref, push, set } from "firebase/database";
+import "./firebase";
 
 function App() {
+  // firebase codes
+  const addDataFire = (newDataList) => {
+    setDataList(newDataList);
+    const db = getDatabase();
+    set(ref(db, "paste-data"), {
+      data: [...newDataList]
+    });
+  };
+
   const ClipboardData = [
     "1. Hello how are you",
     "2. item is the powerfull",
@@ -33,7 +44,7 @@ function App() {
   const removeDataItem = (index) => {
     let newDataList = [...dataList];
     setUndoData(newDataList.splice(index, 1).toString());
-    setDataList(newDataList);
+    addDataFire(newDataList);
     setSeverity("error");
     showToast();
   };
@@ -41,7 +52,7 @@ function App() {
   const undo = () => {
     let newDataList = [...dataList];
     newDataList.unshift(undoData);
-    setDataList(newDataList);
+    addDataFire(newDataList);
     hideToast();
   };
 
@@ -49,32 +60,32 @@ function App() {
     let newDataList = [...dataList];
 
     // pasted manually
-    if (!navigator.clipboard && pasteItem!='') {
+    if (!navigator.clipboard && pasteItem !== "") {
       let availIndex = newDataList.indexOf(pasteItem);
-      if (availIndex != -1) {
+      if (availIndex !== -1) {
         let availableData = newDataList.splice(availIndex, 1).toString();
         newDataList.unshift(availableData);
-        setDataList(newDataList);
+        addDataFire(newDataList);
         return;
       }
       // if not available then simply add it
       newDataList.unshift(pasteItem);
-      setDataList(newDataList);
+      addDataFire(newDataList);
     } else {
       // paste by button
       navigator.clipboard.readText().then((text) => {
         // checking that if data already available
         // then don't add just remove and add again
         let availIndex = newDataList.indexOf(text);
-        if (availIndex != -1) {
+        if (availIndex !== -1) {
           let availableData = newDataList.splice(availIndex, 1).toString();
           newDataList.unshift(availableData);
-          setDataList(newDataList);
+          addDataFire(newDataList);
           return;
         }
         // if not available then simply add it
         newDataList.unshift(text);
-        setDataList(newDataList);
+        addDataFire(newDataList);
       });
     }
   };
