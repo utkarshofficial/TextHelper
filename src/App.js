@@ -2,7 +2,7 @@ import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
-// import Register from "./comonents/Register";
+import Register from "./comonents/Register";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
@@ -114,7 +114,6 @@ function App() {
 
   return (
     <React.Fragment>
-      {/* <Register /> */}
       <div className="box">
         <Paste pasteDataItem={pasteDataItem} />
         <DataList

@@ -35,6 +35,7 @@ function Register() {
       <div className="signup-icon">
         <LockOpenIcon />
       </div>
+    <h2>Sign up</h2>
       <TextField
         className="m-1 setwidth"
         label="Email"
@@ -69,6 +70,7 @@ function Register() {
           label="Password"
         />
       </FormControl>
+
       <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
         <InputLabel htmlFor="confirm-password-label">Password</InputLabel>
         <OutlinedInput
@@ -92,6 +94,7 @@ function Register() {
           label="Password"
         />
       </FormControl>
+
       <Button disabled={password!==confirmPassword || password==="" || email===""} variant="contained">Sign up</Button>
     </div>
   );
