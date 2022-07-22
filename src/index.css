@@ -7,6 +7,7 @@ body{
 @media screen and (max-width: 600px) {
     .paste-box{
         width: 98vw!important;
+        height: 20vh!important;
     }
     .card{
         width: 98vw!important;

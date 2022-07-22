@@ -4,6 +4,8 @@
     align-items: center;
     
     ul{
+        overflow: scroll;
+        height: calc(100vh - 30vh - 64px);
         li{
             display: flex;
             justify-content: space-between;

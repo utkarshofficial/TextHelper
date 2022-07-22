@@ -11,6 +11,12 @@ function App() {
     "4. why is the playground window is stick around here",
     "5. item is the powerfull",
     "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
+    "1. Hello how are you",
+    "2. item is the powerfull",
+    "3. item is the powerfull",
+    "4. why is the playground window is stick around here",
+    "5. item is the powerfull",
+    "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
   ];
 
   const [dataList, setDataList] = React.useState(ClipboardData);

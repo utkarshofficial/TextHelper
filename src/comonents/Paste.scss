@@ -3,8 +3,9 @@
     justify-content: center;
     align-items: center;
     border: 2px solid white;
-    margin: 10px 0 10px 0;
-    height: 20vh;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 30vh;
     width: 80vw;
     .paste-manual{
         display: flex;
@@ -14,7 +15,7 @@
         }
     }
     .paste-btn{
-        height: 30vh;
+        height: 100%;
         width:
          100%;
     }

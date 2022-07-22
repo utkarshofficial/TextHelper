@@ -1,3 +1,15 @@
-.data{
-    
+li{
+    .text-item{
+        max-width: 69vw!important;
+        span{
+            color: rgb(0, 149, 255);
+            font-weight: bolder;
+        }
+        a{
+            font-weight: bolder;
+        }
+        span:hover{
+            cursor: pointer;
+        }
+    }
 }
