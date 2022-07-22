@@ -2,19 +2,34 @@ import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
-import { getDatabase, ref, push, set } from "firebase/database";
+import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
 function App() {
-  // firebase codes
+  // firebase functions
+  // for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
     setDataList(newDataList);
     const db = getDatabase();
     set(ref(db, "paste-data"), {
-      data: [...newDataList]
+      data: [...newDataList],
     });
   };
-
+  // for reading data from the firebase db
+  const readDataFire = () => {
+    const db = getDatabase();
+    const dbref = ref(db, "paste-data/data");
+    // snapshot carries all the data of firebase db
+    onValue(dbref, (snapshot) => {
+      let records = [];
+      snapshot.forEach((childSnapshot) => {
+        let data = childSnapshot.val();
+        records.push(data);
+      });
+      setDataList(records);
+    });
+  };
+  // firebase functions end ------------- //
   const ClipboardData = [
     "1. Hello how are you",
     "2. item is the powerfull",
@@ -30,8 +45,10 @@ function App() {
     "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
   ];
 
-  const [dataList, setDataList] = React.useState(ClipboardData);
-
+  const [dataList, setDataList] = React.useState([]);
+  if(dataList.length==0){
+  readDataFire();
+  }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
 
