@@ -2,7 +2,7 @@ import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
-import Register from "./comonents/Register";
+// import Register from "./comonents/Register";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
@@ -11,7 +11,7 @@ function App() {
   // for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
     // for removing the example data
-    if (newDataList.indexOf("example")) {
+    if (newDataList.indexOf("example")!==-1 && newDataList.length!==1) {
       newDataList.pop();
     }
     setDataList(newDataList);
@@ -39,9 +39,11 @@ function App() {
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
   if (dataList.length === 0) {
-    let newData = ["example"];
     readDataFire();
-    if (dataList.length === 0) addDataFire(newData);
+    if (dataList.length === 0) {
+      let newData = ["example"];
+      addDataFire(newData);
+    }
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
