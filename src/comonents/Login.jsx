@@ -7,18 +7,18 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
-  FormControl
+  FormControl,
 } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-function Register() {
+function Login() {
   const [hideText, setHideText] = React.useState("false");
-  const [email,setEmail] = React.useState("");
-  const [password,setPassword] = React.useState("");
-  
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const showPasswordText = () => {
     if (hideText) {
@@ -28,31 +28,50 @@ function Register() {
     }
   };
 
+  // for login existing user
+  const UserLogin = () => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
 
   return (
     <div className="signup-box">
       <div className="signup-icon">
         <LockOutlinedIcon />
       </div>
-    <h2>Log in</h2>
+      <h2>Log in</h2>
       <TextField
         className="m-1 setwidth"
         label="Email"
         type="email"
-        onChange={(e)=>{
-            setEmail(e.target.value)
+        onChange={(e) => {
+          setEmail(e.target.value);
         }}
         autoComplete="current-password"
         InputProps={{
-            startAdornment: <InputAdornment position="start"><EmailIcon/></InputAdornment>,
-          }}
+          startAdornment: (
+            <InputAdornment position="start">
+              <EmailIcon />
+            </InputAdornment>
+          ),
+        }}
       />
       <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
         <InputLabel htmlFor="password-label">Password</InputLabel>
         <OutlinedInput
           id="password-label"
           type={hideText ? "password" : "text"}
-          onChange={(e)=>{
+          onChange={(e) => {
             setPassword(e.target.value);
           }}
           endAdornment={
@@ -70,17 +89,21 @@ function Register() {
         />
       </FormControl>
 
-      <Button disabled={
-        (email === "") ||
-        (password === "") ||
-        (email.lastIndexOf("@") === -1) ||
-        (email.lastIndexOf(".") === -1) ||
-        (email.lastIndexOf("@") > email.lastIndexOf("."))
-      } 
-      
-      variant="contained">Log in</Button>
+      <Button
+        disabled={
+          email === "" ||
+          password === "" ||
+          email.lastIndexOf("@") === -1 ||
+          email.lastIndexOf(".") === -1 ||
+          email.lastIndexOf("@") > email.lastIndexOf(".")
+        }
+        variant="contained"
+        onClick={UserLogin}
+      >
+        Log in
+      </Button>
     </div>
   );
 }
 
-export default Register;
+export default Login;
