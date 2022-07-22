@@ -3,7 +3,9 @@ import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
 import Register from "./comonents/Register";
-import Login from "./comonents/Login"
+import Login from "./comonents/Login";
+import { AuthProvider } from "./Auth";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
@@ -12,7 +14,7 @@ function App() {
   // for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
     // for removing the example data
-    if (newDataList.indexOf("example")!==-1 && newDataList.length!==1) {
+    if (newDataList.indexOf("example") !== -1 && newDataList.length !== 1) {
       newDataList.pop();
     }
     setDataList(newDataList);
@@ -113,20 +115,30 @@ function App() {
     setCopied(false);
   };
 
+  const Home = (
+    <div className="box">
+      <Paste pasteDataItem={pasteDataItem} />
+      <DataList
+        dataList={dataList}
+        removeDataItem={removeDataItem}
+        showToast={showToast}
+      />
+      {copied ? (
+        <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
+      ) : null}
+    </div>
+  );
+
   return (
-    <React.Fragment>
-      <div className="box">
-        <Paste pasteDataItem={pasteDataItem} />
-        <DataList
-          dataList={dataList}
-          removeDataItem={removeDataItem}
-          showToast={showToast}
-        />
-        {copied ? (
-          <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
-        ) : null}
-      </div>
-    </React.Fragment>
+      <Router>
+        <Routes>
+          <Route exact path="/">
+            <Route index element={Home}/>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Register />} />
+          </Route>
+        </Routes>
+      </Router>
   );
 }
 
