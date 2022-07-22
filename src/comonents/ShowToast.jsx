@@ -9,7 +9,7 @@ function ShowToast({undo, hideToast, severity }) {
   // undo button
   var message,undone;
 
-  if (severity == "success") {
+  if (severity === "success") {
     message = "Item Copied Successfully!";
     undone = null;
   } else {

@@ -2,6 +2,7 @@ import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
+import Register from "./comonents/Register";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
@@ -9,6 +10,10 @@ function App() {
   // firebase functions
   // for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
+    // for removing the example data
+    if (newDataList.indexOf("example")) {
+      newDataList.pop();
+    }
     setDataList(newDataList);
     const db = getDatabase();
     set(ref(db, "paste-data"), {
@@ -29,25 +34,14 @@ function App() {
       setDataList(records);
     });
   };
-  // firebase functions end ------------- //
-  const ClipboardData = [
-    "1. Hello how are you",
-    "2. item is the powerfull",
-    "3. item is the powerfull",
-    "4. why is the playground window is stick around here",
-    "5. item is the powerfull",
-    "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
-    "1. Hello how are you",
-    "2. item is the powerfull",
-    "3. item is the powerfull",
-    "4. why is the playground window is stick around here",
-    "5. item is the powerfull",
-    "6. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, est.",
-  ];
 
+  // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
-  if(dataList.length==0){
-  readDataFire();
+  // condition for redering list
+  if (dataList.length === 0) {
+    let newData = ["example"];
+    readDataFire();
+    if (dataList.length === 0) addDataFire(newData);
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
@@ -117,17 +111,20 @@ function App() {
   };
 
   return (
-    <div className="box">
-      <Paste pasteDataItem={pasteDataItem} />
-      <DataList
-        dataList={dataList}
-        removeDataItem={removeDataItem}
-        showToast={showToast}
-      />
-      {copied ? (
-        <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
-      ) : null}
-    </div>
+    <React.Fragment>
+      {/* <Register /> */}
+      <div className="box">
+        <Paste pasteDataItem={pasteDataItem} />
+        <DataList
+          dataList={dataList}
+          removeDataItem={removeDataItem}
+          showToast={showToast}
+        />
+        {copied ? (
+          <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
+        ) : null}
+      </div>
+    </React.Fragment>
   );
 }
 
