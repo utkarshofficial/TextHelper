@@ -13,13 +13,14 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore"; 
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import ShowToast from "./ShowToast";
-import {db} from "../firebase"
+import { db } from "../firebase";
+import Navbar from "./Navbar";
 
 function Register() {
   const [hideText, setHideText] = React.useState(false);
@@ -47,15 +48,11 @@ function Register() {
   const handleSignup = async (e) => {
     e.preventDefault();
     const auth = getAuth();
-    
+
     // res - response
-    try{
-      const res = await createUserWithEmailAndPassword(
-        auth, 
-        email, 
-        password,
-      );
-  
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
       await setDoc(doc(db, "users", res.user.uid), {
         fullname: fullName,
         email: email,
@@ -64,17 +61,17 @@ function Register() {
       });
       setShowToast(true);
       setTimeout(() => {
-        navigate("/");
+        navigate("/main");
       }, 2000);
-      dispatch({type:"LOGIN",payload:res.user});
-    } catch (err){
+      dispatch({ type: "LOGIN", payload: res.user });
+    } catch (err) {
       setAuthError(true);
     }
-
-    
   };
 
   return (
+    <React.Fragment>
+      <Navbar />
       <form onSubmit={handleSignup}>
         <div className="signup-box">
           <div className="signup-icon">
@@ -82,43 +79,47 @@ function Register() {
           </div>
           <h2>Sign up</h2>
           {showToast ? (
-          <ShowToast
-            severity={"success"}
-            message={"User Created Successfully !"}
-            hideToast={null}
-          />
-        ) : null}
-          <TextField
-            className="m-1 setwidth"
-            label="Full Name"
-            type="text"
-            onChange={(e) => {
-              setFullName(e.target.value);
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircleIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            className="m-1 setwidth"
-            label="Email"
-            type="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            autoComplete="current-password"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+            <ShowToast
+              severity={"success"}
+              message={"User Created Successfully !"}
+              hideToast={null}
+            />
+          ) : null}
+          <FormControl sx={{ m: 1, width: "25.8ch" }} variant="outlined">
+            <TextField
+              className="m-1 setwidth"
+              label="Full Name"
+              type="text"
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircleIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+          <FormControl sx={{ m: 1, width: "25.8ch" }} variant="outlined">
+            <TextField
+              className="m-1 setwidth"
+              label="Email"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              autoComplete="current-password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <InputLabel htmlFor="password-label">Password</InputLabel>
             <OutlinedInput
@@ -143,7 +144,9 @@ function Register() {
           </FormControl>
 
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <InputLabel htmlFor="confirm-password-label">Confirm Password</InputLabel>
+            <InputLabel htmlFor="confirm-password-label">
+              Confirm Password
+            </InputLabel>
             <OutlinedInput
               id="confirm-password-label"
               type={hideText ? "password" : "text"}
@@ -181,6 +184,7 @@ function Register() {
           </Button>
         </div>
       </form>
+    </React.Fragment>
   );
 }
 

@@ -4,6 +4,7 @@ import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
 import Register from "./comonents/Register";
 import Login from "./comonents/Login";
+import Home from "./comonents/Home";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -13,6 +14,7 @@ import {
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 import { AuthContext } from "./context/AuthContext";
+import Navbar from "./comonents/Navbar";
 
 function App() {
   // firebase functions
@@ -137,9 +139,10 @@ function App() {
   const RequireAuth = ({ children }) => {
     return User !== null ? children : <Navigate to="/login" />;
   };
-
-  const Home = (
+  // where all copy paste done
+  const Main = (
     <RequireAuth>
+      <Navbar/>
       <div className="box">
         <Paste pasteDataItem={pasteDataItem} />
         <DataList
@@ -158,7 +161,8 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/">
-          <Route index element={Home} />
+          <Route index element={<Home/>}/>
+          <Route path="main" element={Main} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Register />} />
         </Route>

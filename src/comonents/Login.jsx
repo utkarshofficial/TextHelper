@@ -17,6 +17,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import ShowToast from "./ShowToast";
+import Navbar from "./Navbar"
 
 function Login() {
   const [hideText, setHideText] = React.useState("false");
@@ -47,7 +48,7 @@ function Login() {
         const user = userCredential.user;
         dispatch({ type: "LOGIN", payload: user });
         setTimeout(() => {
-          navigate("/");
+          navigate("/main");
         }, 2000);
       })
       .catch((error) => {
@@ -56,84 +57,87 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div className="signup-box">
-        <div className="signup-icon">
-          <LockOutlinedIcon />
-        </div>
-        <h2>Log in</h2>
-        {showToast ? (
-          <ShowToast
-            severity={"success"}
-            message={"User Logged in Successfully !"}
-            hideToast={null}
-          />
-        ) : null}
-        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-        <TextField
-          label="Email"
-          type="email"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          // for showing the red border
-          error={authError}
-          autoComplete="current-password"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        </FormControl>
-        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-          <InputLabel htmlFor="password-label">Password</InputLabel>
-          <OutlinedInput
-            id="password-label"
-            type={hideText ? "password" : "text"}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            // for showing the red border
-            error={authError}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={showPasswordText}
-                  edge="end"
-                >
-                  {hideText ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
+    <React.Fragment>
+      <Navbar />
+      <form onSubmit={handleLogin} style={{marginTop: "80px"}}>
+        <div className="signup-box">
+          <div className="signup-icon">
+            <LockOutlinedIcon />
+          </div>
+          <h2>Sign in</h2>
+          {showToast ? (
+            <ShowToast
+              severity={"success"}
+              message={"User Logged in Successfully !"}
+              hideToast={null}
+            />
+          ) : null}
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <TextField
+              label="Email"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              // for showing the red border
+              error={authError}
+              autoComplete="current-password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <InputLabel htmlFor="password-label">Password</InputLabel>
+            <OutlinedInput
+              id="password-label"
+              type={hideText ? "password" : "text"}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              // for showing the red border
+              error={authError}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={showPasswordText}
+                    edge="end"
+                  >
+                    {hideText ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
 
-        {authError ? (
-          <span className="p-1 badge mb-2 text-bg-danger">
-            email or passowrd is wrong !
-          </span>
-        ) : null}
-        <Button
-          type="submit"
-          className="mt-1"
-          disabled={
-            email === "" ||
-            password === "" ||
-            email.lastIndexOf("@") === -1 ||
-            email.lastIndexOf(".") === -1 ||
-            email.lastIndexOf("@") > email.lastIndexOf(".")
-          }
-          variant="contained"
-        >
-          Log in
-        </Button>
-      </div>
-    </form>
+          {authError ? (
+            <span className="p-1 badge mb-2 text-bg-danger">
+              email or passowrd is wrong !
+            </span>
+          ) : null}
+          <Button
+            type="submit"
+            className="mt-1"
+            disabled={
+              email === "" ||
+              password === "" ||
+              email.lastIndexOf("@") === -1 ||
+              email.lastIndexOf(".") === -1 ||
+              email.lastIndexOf("@") > email.lastIndexOf(".")
+            }
+            variant="contained"
+          >
+            Sign in
+          </Button>
+        </div>
+      </form>
+    </React.Fragment>
   );
 }
 
