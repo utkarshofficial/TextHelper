@@ -14,7 +14,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
@@ -44,15 +48,20 @@ function Register() {
     }
   };
 
+  
+
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
     e.preventDefault();
     const auth = getAuth();
-
+    var user = null;
     // res - response
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-
+      user = res.user;
+      await updateProfile(res.user, {
+        displayName: fullName,
+      })
       await setDoc(doc(db, "users", res.user.uid), {
         fullname: fullName,
         email: email,
@@ -60,10 +69,10 @@ function Register() {
         timeStamp: serverTimestamp(),
       });
       setShowToast(true);
+      dispatch({ type: "LOGIN", payload: res.user });
       setTimeout(() => {
         navigate("/main");
       }, 2000);
-      dispatch({ type: "LOGIN", payload: res.user });
     } catch (err) {
       setAuthError(true);
     }

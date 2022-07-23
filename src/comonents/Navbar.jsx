@@ -17,12 +17,13 @@ import LoginIcon from "@mui/icons-material/Login";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "react-bootstrap/Button";
+import { AuthContext } from "../context/AuthContext";
 
 function OffcanvasExample() {
   const [Arrow, setArrow] = React.useState(true);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [fullname,setFullname] = React.useState("");
-  const [email,setEmail] = React.useState("");
+  const [fullname, setFullname] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
   const toggleArrow = () => {
     {
@@ -70,7 +71,7 @@ function OffcanvasExample() {
         </Nav.Link>
         <hr className="divider" />
         <Nav.Link href="/" className="fullname">
-          <LogoutIcon className="nav-icons"/>
+          <LogoutIcon className="nav-icons" />
           Sign Out
         </Nav.Link>
         <Button variant="dark">
@@ -115,9 +116,11 @@ function OffcanvasExample() {
       </Nav>
     );
   };
+  // * for getting the current user details
+  const { currentUser } = React.useContext(AuthContext);
 
   return (
-    <>
+    <React.Fragment>
       <Navbar
         sticky="top"
         bg="dark"
@@ -159,7 +162,7 @@ function OffcanvasExample() {
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-    </>
+    </React.Fragment>
   );
 }
 
