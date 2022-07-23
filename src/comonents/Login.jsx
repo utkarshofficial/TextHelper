@@ -69,8 +69,8 @@ function Login() {
             hideToast={null}
           />
         ) : null}
+        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
         <TextField
-          className="m-1 setwidth"
           label="Email"
           type="email"
           onChange={(e) => {
@@ -87,6 +87,7 @@ function Login() {
             ),
           }}
         />
+        </FormControl>
         <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
           <InputLabel htmlFor="password-label">Password</InputLabel>
           <OutlinedInput
