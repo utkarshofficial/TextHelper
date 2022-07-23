@@ -4,7 +4,12 @@ import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
 import Register from "./comonents/Register";
 import Login from "./comonents/Login";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
 
@@ -14,7 +19,7 @@ function App() {
   const addDataFire = (newDataList) => {
     // for removing the example data
     if (newDataList.indexOf("example") !== -1 && newDataList.length > 1) {
-      newDataList.splice(newDataList.indexOf("example"),1);
+      newDataList.splice(newDataList.indexOf("example"), 1);
     }
     setDataList(newDataList);
     const db = getDatabase();
@@ -33,7 +38,7 @@ function App() {
         let data = childSnapshot.val();
         records.push(data);
       });
-      if(snapshot.size === 0){
+      if (snapshot.size === 0) {
         addDataFire(["example"]);
         return;
       }
@@ -41,7 +46,7 @@ function App() {
     });
   };
   // for checking data list is readed or not
-  const [isDataListed,setIsDataListed] = React.useState(false);
+  const [isDataListed, setIsDataListed] = React.useState(false);
   // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
@@ -120,30 +125,40 @@ function App() {
     setCopied(false);
   };
 
+  // * Protecting routes
+  const currentUser = false;
+  // children means home page, what is showing after login
+  // wrap all the pages that you don't want to show before login
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
+
   const Home = (
-    <div className="box">
-      <Paste pasteDataItem={pasteDataItem} />
-      <DataList
-        dataList={dataList}
-        removeDataItem={removeDataItem}
-        showToast={showToast}
-      />
-      {copied ? (
-        <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
-      ) : null}
-    </div>
+    <RequireAuth>
+      <div className="box">
+        <Paste pasteDataItem={pasteDataItem} />
+        <DataList
+          dataList={dataList}
+          removeDataItem={removeDataItem}
+          showToast={showToast}
+        />
+        {copied ? (
+          <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
+        ) : null}
+      </div>
+    </RequireAuth>
   );
 
   return (
-      <Router>
-        <Routes>
-          <Route exact path="/">
-            <Route index element={Home}/>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Register />} />
-          </Route>
-        </Routes>
-      </Router>
+    <Router>
+      <Routes>
+        <Route exact path="/">
+          <Route index element={Home} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Register />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
