@@ -51,19 +51,7 @@ function Login() {
       });
   };
 
-  // * Not showing login component after logged in
-  // * if user logged in and pressed back then they
-  // * doesn't see login page
-  const { currentUser } = React.useContext(AuthContext);
-  const User = currentUser;
-  // children means home page, what is showing after login
-  // wrap all the pages that you don't want to show before login
-  const DontShowLoginAfterAuth = ({ children }) => {
-    return User !== null ? <Navigate to="/" /> : children ;
-  };
-
   return (
-    <DontShowLoginAfterAuth>
       <form onSubmit={handleLogin}>
         <div className="signup-box">
           <div className="signup-icon">
@@ -134,7 +122,6 @@ function Login() {
           </Button>
         </div>
       </form>
-    </DontShowLoginAfterAuth>
   );
 }
 

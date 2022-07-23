@@ -13,12 +13,16 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore"; 
+import {db} from "../firebase"
 
 function Register() {
-  const [hideText, setHideText] = React.useState("false");
+  const [hideText, setHideText] = React.useState(false);
+  const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [authError, setAuthError] = React.useState(false);
@@ -37,40 +41,56 @@ function Register() {
     }
   };
 
-  // for adding new user
-  const handleSignup = (e) => {
+  // for adding new user and storing data on firestore
+  const handleSignup = async (e) => {
     e.preventDefault();
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch({ type: "LOGIN", payload: user });
-        navigate("/");
-      })
-      .catch((error) => {
-        setAuthError(true);
+    
+    // res - response
+    try{
+      const res = await createUserWithEmailAndPassword(
+        auth, 
+        email, 
+        password,
+      );
+  
+      await setDoc(doc(db, "users", res.user.uid), {
+        fullname: fullName,
+        email: email,
+        password: password,
+        timeStamp: serverTimestamp(),
       });
-  };
+      navigate("/");
+      dispatch({type:"LOGIN",payload:res.user});
+    } catch (err){
+      setAuthError(true);
+    }
 
-  // * Not showing login component after logged in
-  // * if user logged in and pressed back then they
-  // * doesn't see login page
-  const { currentUser } = React.useContext(AuthContext);
-  const User = currentUser;
-  // children means home page, what is showing after login
-  // wrap all the pages that you don't want to show before login
-  const DontShowSignUpAfterAuth = ({ children }) => {
-    return User !== null ? <Navigate to="/" /> : children;
+    
   };
 
   return (
-    <DontShowSignUpAfterAuth>
       <form onSubmit={handleSignup}>
         <div className="signup-box">
           <div className="signup-icon">
             <LockOpenIcon />
           </div>
           <h2>Sign up</h2>
+          <TextField
+            className="m-1 setwidth"
+            label="Full Name"
+            type="text"
+            onChange={(e) => {
+              setFullName(e.target.value);
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircleIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
           <TextField
             className="m-1 setwidth"
             label="Email"
@@ -111,7 +131,7 @@ function Register() {
           </FormControl>
 
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <InputLabel htmlFor="confirm-password-label">Password</InputLabel>
+            <InputLabel htmlFor="confirm-password-label">Confirm Password</InputLabel>
             <OutlinedInput
               id="confirm-password-label"
               type={hideText ? "password" : "text"}
@@ -130,7 +150,7 @@ function Register() {
                   </IconButton>
                 </InputAdornment>
               }
-              label="Password"
+              label="Confirm Password"
             />
           </FormControl>
           {authError ? (
@@ -149,7 +169,6 @@ function Register() {
           </Button>
         </div>
       </form>
-    </DontShowSignUpAfterAuth>
   );
 }
 
