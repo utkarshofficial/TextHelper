@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import "./firebase";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
   // firebase functions
@@ -126,11 +127,12 @@ function App() {
   };
 
   // * Protecting routes
-  const currentUser = false;
+  const { currentUser } = React.useContext(AuthContext);
+  const User = currentUser;
   // children means home page, what is showing after login
   // wrap all the pages that you don't want to show before login
   const RequireAuth = ({ children }) => {
-    return currentUser ? children : <Navigate to="/login" />;
+    return User !== null ? children : <Navigate to="/login" />;
   };
 
   const Home = (
