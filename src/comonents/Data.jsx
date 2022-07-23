@@ -5,8 +5,6 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {
   Button,
   ButtonGroup,
-  ListItem,
-  ListItemText,
   Link,
 } from "@mui/material";
 import "./Data.scss";
@@ -23,10 +21,10 @@ function Data({ data, removeDataItem, index, showToast }) {
   );
 
   const CopyBtn = (
-    <CopyToClipboard text={data} onCopy={showToast}>
+    <CopyToClipboard text={data}>
       <Button
         onClick={() => {
-          showToast();
+          showToast("Item Copied Successfully!","success");
         }}
       >
         <ContentCopyIcon color="success" />

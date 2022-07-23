@@ -16,7 +16,7 @@ import { AuthContext } from "./context/AuthContext";
 
 function App() {
   // firebase functions
-  // for adding the dataarray to the firebase db
+  // * for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
     // for removing the example data
     if (newDataList.indexOf("example") !== -1 && newDataList.length > 1) {
@@ -28,7 +28,7 @@ function App() {
       data: [...newDataList],
     });
   };
-  // for reading data from the firebase db
+  // * for reading data from the firebase db
   const readDataFire = () => {
     const db = getDatabase();
     const dbref = ref(db, "paste-data/data");
@@ -61,7 +61,7 @@ function App() {
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
-  const [message,setMessage] = React.useState("Item Copied Successfully!");
+  const [message,setMessage] = React.useState("");
 
   // copy the data to clipboard and show toast
   const [copied, setCopied] = React.useState(false);
@@ -73,9 +73,7 @@ function App() {
     let newDataList = [...dataList];
     setUndoData(newDataList.splice(index, 1).toString());
     addDataFire(newDataList);
-    setSeverity("error");
-    setMessage("Item removed !")
-    showToast();
+    showToast("Item removed !","error");
   };
 
   const undo = () => {
@@ -119,7 +117,10 @@ function App() {
     }
   };
 
-  const showToast = () => {
+  // for showing message and color of toast
+  const showToast = (messageToShow,severityToShow) => {
+    setMessage(messageToShow);
+    setSeverity(severityToShow);
     setCopied(true);
   };
 
