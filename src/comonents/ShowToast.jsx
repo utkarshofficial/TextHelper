@@ -1,19 +1,17 @@
 import React from "react";
 import { Button, Slide, Alert, Snackbar } from "@mui/material";
 
-function ShowToast({undo, hideToast, severity }) {
+function ShowToast({undo, hideToast, severity, message}) {
   function TransitionUp(props) {
     return <Slide {...props} direction="up" />;
   }
 
   // undo button
-  var message,undone;
+  var undone;
 
   if (severity === "success") {
-    message = "Item Copied Successfully!";
     undone = null;
-  } else {
-    message = "Item is deleted!";
+  } else if (severity === "error") {
     undone = (
       <Button color="secondary" size="small" onClick={undo}>
         UNDO

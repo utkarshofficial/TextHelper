@@ -61,6 +61,7 @@ function App() {
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
+  const [message,setMessage] = React.useState("Item Copied Successfully!");
 
   // copy the data to clipboard and show toast
   const [copied, setCopied] = React.useState(false);
@@ -73,6 +74,7 @@ function App() {
     setUndoData(newDataList.splice(index, 1).toString());
     addDataFire(newDataList);
     setSeverity("error");
+    setMessage("Item removed !")
     showToast();
   };
 
@@ -145,7 +147,7 @@ function App() {
           showToast={showToast}
         />
         {copied ? (
-          <ShowToast severity={severity} hideToast={hideToast} undo={undo} />
+          <ShowToast severity={severity} message={message} hideToast={hideToast} undo={undo} />
         ) : null}
       </div>
     </RequireAuth>

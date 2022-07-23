@@ -16,12 +16,14 @@ import EmailIcon from "@mui/icons-material/Email";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
+import ShowToast from "./ShowToast";
 
 function Login() {
   const [hideText, setHideText] = React.useState("false");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [authError, setAuthError] = React.useState(false);
+  const [showToast, setShowToast] = React.useState(false);
   // dispatch is used to login
   const { dispatch } = React.useContext(AuthContext);
   // navigate is used to navigate user to home page after login
@@ -41,10 +43,12 @@ function Login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
+        setShowToast(true);
         const user = userCredential.user;
         dispatch({ type: "LOGIN", payload: user });
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       })
       .catch((error) => {
         setAuthError(true);
@@ -52,76 +56,83 @@ function Login() {
   };
 
   return (
-      <form onSubmit={handleLogin}>
-        <div className="signup-box">
-          <div className="signup-icon">
-            <LockOutlinedIcon />
-          </div>
-          <h2>Log in</h2>
-          <TextField
-            className="m-1 setwidth"
-            label="Email"
-            type="email"
+    <form onSubmit={handleLogin}>
+      <div className="signup-box">
+        <div className="signup-icon">
+          <LockOutlinedIcon />
+        </div>
+        <h2>Log in</h2>
+        {showToast ? (
+          <ShowToast
+            severity={"success"}
+            message={"User Logged in Successfully !"}
+            hideToast={null}
+          />
+        ) : null}
+        <TextField
+          className="m-1 setwidth"
+          label="Email"
+          type="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          // for showing the red border
+          error={authError}
+          autoComplete="current-password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+          <InputLabel htmlFor="password-label">Password</InputLabel>
+          <OutlinedInput
+            id="password-label"
+            type={hideText ? "password" : "text"}
             onChange={(e) => {
-              setEmail(e.target.value);
+              setPassword(e.target.value);
             }}
             // for showing the red border
             error={authError}
-            autoComplete="current-password"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <InputLabel htmlFor="password-label">Password</InputLabel>
-            <OutlinedInput
-              id="password-label"
-              type={hideText ? "password" : "text"}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              // for showing the red border
-              error={authError}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={showPasswordText}
-                    edge="end"
-                  >
-                    {hideText ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
-
-          {authError ? (
-            <span className="p-1 badge mb-2 text-bg-danger">
-              email or passowrd is wrong !
-            </span>
-          ) : null}
-          <Button
-            type="submit"
-            className="mt-1"
-            disabled={
-              email === "" ||
-              password === "" ||
-              email.lastIndexOf("@") === -1 ||
-              email.lastIndexOf(".") === -1 ||
-              email.lastIndexOf("@") > email.lastIndexOf(".")
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={showPasswordText}
+                  edge="end"
+                >
+                  {hideText ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
             }
-            variant="contained"
-          >
-            Log in
-          </Button>
-        </div>
-      </form>
+            label="Password"
+          />
+        </FormControl>
+
+        {authError ? (
+          <span className="p-1 badge mb-2 text-bg-danger">
+            email or passowrd is wrong !
+          </span>
+        ) : null}
+        <Button
+          type="submit"
+          className="mt-1"
+          disabled={
+            email === "" ||
+            password === "" ||
+            email.lastIndexOf("@") === -1 ||
+            email.lastIndexOf(".") === -1 ||
+            email.lastIndexOf("@") > email.lastIndexOf(".")
+          }
+          variant="contained"
+        >
+          Log in
+        </Button>
+      </div>
+    </form>
   );
 }
 

@@ -18,6 +18,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore"; 
+import ShowToast from "./ShowToast";
 import {db} from "../firebase"
 
 function Register() {
@@ -27,6 +28,7 @@ function Register() {
   const [password, setPassword] = React.useState("");
   const [authError, setAuthError] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showToast, setShowToast] = React.useState(false);
 
   // for savgin user to authcontext
   // dispatch is destructured
@@ -60,7 +62,10 @@ function Register() {
         password: password,
         timeStamp: serverTimestamp(),
       });
-      navigate("/");
+      setShowToast(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
       dispatch({type:"LOGIN",payload:res.user});
     } catch (err){
       setAuthError(true);
@@ -76,6 +81,13 @@ function Register() {
             <LockOpenIcon />
           </div>
           <h2>Sign up</h2>
+          {showToast ? (
+          <ShowToast
+            severity={"success"}
+            message={"User Created Successfully !"}
+            hideToast={null}
+          />
+        ) : null}
           <TextField
             className="m-1 setwidth"
             label="Full Name"
