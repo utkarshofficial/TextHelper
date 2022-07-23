@@ -60,7 +60,7 @@ function Register() {
   // children means home page, what is showing after login
   // wrap all the pages that you don't want to show before login
   const DontShowSignUpAfterAuth = ({ children }) => {
-    return User !== null ? <Navigate to="/" /> : { children };
+    return User !== null ? <Navigate to="/" /> : children;
   };
 
   return (
