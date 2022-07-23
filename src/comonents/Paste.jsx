@@ -20,9 +20,14 @@ function Paste({ pasteDataItem }) {
     </button>
   );
 
+  const Submit = (event)=>{
+    event.preventDefault();
+    pasteDataItem(pasteData);
+  }
+
   // paste manually by ctrl + c
   const PasteManually = (
-    <div className="paste-manual">
+    <form className="paste-manual" onSubmit={Submit}>
       <TextField
         className="data-input"
         label="Paste data here"
@@ -44,7 +49,7 @@ function Paste({ pasteDataItem }) {
       }} variant="contained">
         Add
       </Button>
-    </div>
+    </form>
   );
 
   return (
