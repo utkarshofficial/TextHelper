@@ -58,7 +58,6 @@ function Login() {
 
   return (
     <React.Fragment>
-      <Navbar />
       <form onSubmit={handleLogin} style={{marginTop: "80px"}}>
         <div className="signup-box">
           <div className="signup-icon">

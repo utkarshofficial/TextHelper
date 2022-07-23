@@ -17,36 +17,40 @@ import LoginIcon from "@mui/icons-material/Login";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "react-bootstrap/Button";
+import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 
-function OffcanvasExample() {
+function NavbarComponent({ currentUser }) {
+  // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [fullname, setFullname] = React.useState("");
-  const [email, setEmail] = React.useState("");
 
+  // * getting logged user details for first time. for changing arrow of dropdown menu
   const toggleArrow = () => {
     {
       Arrow ? setArrow(false) : setArrow(true);
     }
   };
 
-  const ShowLoggedOutAvatar = () => {
-    return (
-      <React.Fragment>
-        <span className="user-name">Sign in</span>
-        <AccountCircleIcon className="account-icon" />
-      </React.Fragment>
-    );
+  const { dispatch } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+  const SignOut = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      dispatch({ type: "LOGOUT" });
+      navigate("/");
+    });
   };
 
   // if user logged in
   const ShowLoggedInAvatar = () => {
+    let firstName = currentUser.displayName;
+    var fname = firstName.slice(0, firstName.indexOf(" "));
     return (
       <React.Fragment>
-        <span className="user-name">Naresh</span>
+        <span className="user-name">{fname}</span>
         <Avatar className="avatar" sx={{ bgcolor: "orange" }}>
-          N
+          {fname[0]}
         </Avatar>
       </React.Fragment>
     );
@@ -55,35 +59,41 @@ function OffcanvasExample() {
   const ShowLoggedInNav = () => {
     return (
       <Nav className="me-auto">
-        <span className="fullname">Naresh Tiwari</span>
+        <span className="fullname">{currentUser.displayName}</span>
         <span className="fullname">
           <EmailIcon className="nav-icons" />
-          nareshtiwari@gmail.com
+          {currentUser.email}
         </span>
         <hr className="divider" />
-        <Nav.Link href="/">
+        <Link to="/" className="nav-link">
           <HomeIcon className="nav-icons" />
           Home
-        </Nav.Link>
+        </Link>
         <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder">
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
         <hr className="divider" />
-        <Nav.Link href="/" className="fullname">
+        <Nav.Link className="fullname" onClick={SignOut}>
           <LogoutIcon className="nav-icons" />
           Sign Out
         </Nav.Link>
         <Button variant="dark">
           <NavDropdown
-            title={loggedIn ? <ShowLoggedInAvatar /> : <ShowLoggedOutAvatar />}
+            title={
+              currentUser !== null ? (
+                <ShowLoggedInAvatar />
+              ) : (
+                <ShowLoggedOutAvatar />
+              )
+            }
             className="show-pc"
             id={"offcanvasNavbarDropdown-expand-lg"}
           >
-            <NavDropdown.Item>Naresh Tiwari</NavDropdown.Item>
-            <NavDropdown.Item>nareshtiwari@gmail.com</NavDropdown.Item>
+            <NavDropdown.Item>{currentUser.displayName}</NavDropdown.Item>
+            <NavDropdown.Item>{currentUser.email}</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item>
+            <NavDropdown.Item onClick={SignOut}>
               <LogoutIcon className="" />
               Sign Out
             </NavDropdown.Item>
@@ -96,28 +106,35 @@ function OffcanvasExample() {
   const ShowLoggedOutNav = () => {
     return (
       <Nav className="justify-content-end flex-grow-1 pe-3">
-        <Nav.Link href="/">
+        <Link to="/" className="nav-link">
           <HomeIcon className="nav-icons" />
           Home
-        </Nav.Link>
+        </Link>
         <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder">
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
         <hr className="divider" />
-        <Nav.Link href="/login">
-          <LoginIcon className="nav-icons" />
-          Sign in
-        </Nav.Link>
-        <Nav.Link href="/signup">
+        <Link to="/signup" className="nav-link">
           <AddCircleIcon className="nav-icons" />
           Sign up
-        </Nav.Link>
+        </Link>
+        <Link to="/login" className="nav-link">
+          <LoginIcon className="nav-icons" />
+          Sign in
+        </Link>
       </Nav>
     );
   };
-  // * for getting the current user details
-  const { currentUser } = React.useContext(AuthContext);
+
+  const ShowLoggedOutAvatar = () => {
+    return (
+      <React.Fragment>
+        <span className="user-name">Sign in</span>
+        <AccountCircleIcon className="account-icon" />
+      </React.Fragment>
+    );
+  };
 
   return (
     <React.Fragment>
@@ -139,7 +156,11 @@ function OffcanvasExample() {
               aria-controls="basic-navbar-nav"
               className="nav-toggle"
             >
-              {loggedIn ? <ShowLoggedInAvatar /> : <ShowLoggedOutAvatar />}
+              {currentUser !== null ? (
+                <ShowLoggedInAvatar />
+              ) : (
+                <ShowLoggedOutAvatar />
+              )}
               {Arrow ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}
             </div>
           </Navbar.Toggle>
@@ -157,7 +178,11 @@ function OffcanvasExample() {
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              {loggedIn ? <ShowLoggedInNav /> : <ShowLoggedOutNav />}
+              {currentUser !== null ? (
+                <ShowLoggedInNav />
+              ) : (
+                <ShowLoggedOutNav />
+              )}
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
@@ -166,4 +191,4 @@ function OffcanvasExample() {
   );
 }
 
-export default OffcanvasExample;
+export default NavbarComponent;

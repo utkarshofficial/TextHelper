@@ -4,7 +4,6 @@ import Navbar from './Navbar'
 function Home() {
   return (
     <React.Fragment>
-      <Navbar/>
       <div>Home</div>
 
     </React.Fragment>

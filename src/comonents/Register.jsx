@@ -80,7 +80,6 @@ function Register() {
 
   return (
     <React.Fragment>
-      <Navbar />
       <form onSubmit={handleSignup}>
         <div className="signup-box">
           <div className="signup-icon">

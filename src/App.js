@@ -63,7 +63,7 @@ function App() {
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
-  const [message,setMessage] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   // copy the data to clipboard and show toast
   const [copied, setCopied] = React.useState(false);
@@ -75,7 +75,7 @@ function App() {
     let newDataList = [...dataList];
     setUndoData(newDataList.splice(index, 1).toString());
     addDataFire(newDataList);
-    showToast("Item removed !","error");
+    showToast("Item removed !", "error");
   };
 
   const undo = () => {
@@ -120,7 +120,7 @@ function App() {
   };
 
   // for showing message and color of toast
-  const showToast = (messageToShow,severityToShow) => {
+  const showToast = (messageToShow, severityToShow) => {
     setMessage(messageToShow);
     setSeverity(severityToShow);
     setCopied(true);
@@ -142,7 +142,6 @@ function App() {
   // where all copy paste done
   const Main = (
     <RequireAuth>
-      <Navbar/>
       <div className="box">
         <Paste pasteDataItem={pasteDataItem} />
         <DataList
@@ -151,23 +150,31 @@ function App() {
           showToast={showToast}
         />
         {copied ? (
-          <ShowToast severity={severity} message={message} hideToast={hideToast} undo={undo} />
+          <ShowToast
+            severity={severity}
+            message={message}
+            hideToast={hideToast}
+            undo={undo}
+          />
         ) : null}
       </div>
     </RequireAuth>
   );
 
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/">
-          <Route index element={<Home/>}/>
-          <Route path="main" element={Main} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Register />} />
-        </Route>
-      </Routes>
-    </Router>
+    <React.Fragment>
+      <Router>
+      <Navbar currentUser={currentUser} />
+        <Routes>
+          <Route exact path="/">
+            <Route index element={<Home />} />
+            <Route path="main" element={Main} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Register />} />
+          </Route>
+        </Routes>
+      </Router>
+    </React.Fragment>
   );
 }
 
