@@ -15,7 +15,7 @@ function App() {
   const addDataFire = (newDataList) => {
     // for removing the example data
     if (newDataList.indexOf("example") !== -1 && newDataList.length > 1) {
-      newDataList.splice(newDataList.indexOf("example"),1);
+      newDataList.splice(newDataList.indexOf("example"), 1);
     }
     setDataList(newDataList);
     const db = getDatabase();
@@ -34,7 +34,7 @@ function App() {
         let data = childSnapshot.val();
         records.push(data);
       });
-      if(snapshot.size === 0){
+      if (snapshot.size === 0) {
         addDataFire(["example"]);
         return;
       }
@@ -42,7 +42,7 @@ function App() {
     });
   };
   // for checking data list is readed or not
-  const [isDataListed,setIsDataListed] = React.useState(false);
+  const [isDataListed, setIsDataListed] = React.useState(false);
   // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
@@ -135,16 +135,21 @@ function App() {
     </div>
   );
 
+  // getting the currentUser
+  const { currentUser } = useContext(AuthContext);
+
   return (
+    <AuthProvider>
       <Router>
         <Routes>
           <Route exact path="/">
-            <Route index element={Home}/>
+            <Route index element={Home} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Register />} />
           </Route>
         </Routes>
       </Router>
+    </AuthProvider>
   );
 }
 
