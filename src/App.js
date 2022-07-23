@@ -14,8 +14,8 @@ function App() {
   // for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
     // for removing the example data
-    if (newDataList.indexOf("example") !== -1 && newDataList.length !== 1) {
-      newDataList.pop();
+    if (newDataList.indexOf("example") !== -1 && newDataList.length > 1) {
+      newDataList.splice(newDataList.indexOf("example"),1);
     }
     setDataList(newDataList);
     const db = getDatabase();
@@ -34,19 +34,25 @@ function App() {
         let data = childSnapshot.val();
         records.push(data);
       });
+      if(snapshot.size === 0){
+        addDataFire(["example"]);
+        return;
+      }
       setDataList(records);
     });
   };
-
+  // for checking data list is readed or not
+  const [isDataListed,setIsDataListed] = React.useState(false);
   // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
-  if (dataList.length === 0) {
+  if (!isDataListed) {
     readDataFire();
-    if (dataList.length === 0) {
-      let newData = ["example"];
-      addDataFire(newData);
-    }
+    // if (dataList.length === 0) {
+    //   let newData = ["example"];
+    //   addDataFire(newData);
+    // }
+    setIsDataListed(true);
   }
   // for toast message copy or deleted
   const [severity, setSeverity] = React.useState("success");
