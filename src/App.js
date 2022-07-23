@@ -17,6 +17,8 @@ import { AuthContext } from "./context/AuthContext";
 import Navbar from "./comonents/Navbar";
 
 function App() {
+  const { currentUser } = React.useContext(AuthContext);
+  const User = currentUser;
   // firebase functions
   // * for adding the dataarray to the firebase db
   const addDataFire = (newDataList) => {
@@ -26,14 +28,14 @@ function App() {
     }
     setDataList(newDataList);
     const db = getDatabase();
-    set(ref(db, "paste-data"), {
+    set(ref(db, `paste-data/${User.uid}`), {
       data: [...newDataList],
     });
   };
   // * for reading data from the firebase db
   const readDataFire = () => {
     const db = getDatabase();
-    const dbref = ref(db, "paste-data/data");
+    const dbref = ref(db, `paste-data/${User.uid}/data`);
     // snapshot carries all the data of firebase db
     onValue(dbref, (snapshot) => {
       let records = [];
@@ -53,7 +55,7 @@ function App() {
   // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
-  if (!isDataListed) {
+  if (!isDataListed && User!==null) {
     readDataFire();
     // if (dataList.length === 0) {
     //   let newData = ["example"];
@@ -132,9 +134,7 @@ function App() {
   };
 
   // * Protecting routes
-  const { currentUser } = React.useContext(AuthContext);
-  const User = currentUser;
-  // children means home page, what is showing after login
+  // * children means home page, what is showing after login
   // wrap all the pages that you don't want to show before login
   const RequireAuth = ({ children }) => {
     return User !== null ? children : <Navigate to="/login" />;

@@ -29,7 +29,7 @@ hr {
 }
 
 .offcanvas {
-    max-width: 250px;
+    max-width: fit-content;
     background-color: #212529;
     color: #ffffff;
 }
