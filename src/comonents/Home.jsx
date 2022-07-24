@@ -1,6 +1,5 @@
 import React from "react";
 import "./Home.scss";
-import Carousel from "./Carousel";
 import BackImg from "../img/bg-img.jpg";
 import Image from "react-bootstrap/Image";
 import { Container, Box, CssBaseline } from "@mui/material";
