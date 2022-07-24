@@ -9,15 +9,14 @@ import {
   IconButton,
   FormControl,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ShowToast from "./ShowToast";
-import Navbar from "./Navbar";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
 function Login() {
   const [hideText, setHideText] = React.useState("false");
@@ -59,10 +58,10 @@ function Login() {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleLogin} style={{ marginTop: "80px" }}>
-        <div className="signup-box">
+      <form className="user-form" onSubmit={handleLogin}>
+        <div className="signup-box login-box">
           <div className="signup-icon">
-            <LockOutlinedIcon />
+          <ContentCopyRoundedIcon className="nav-icon" />
           </div>
           <h2>Sign in</h2>
           {showToast ? (
@@ -72,7 +71,7 @@ function Login() {
               hideToast={null}
             />
           ) : null}
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <TextField
               autoFocus
               label="Email"
@@ -92,10 +91,9 @@ function Login() {
               }}
             />
           </FormControl>
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <InputLabel htmlFor="password-label">Password</InputLabel>
             <OutlinedInput
-              autoFocus
               id="password-label"
               type={hideText ? "password" : "text"}
               onChange={(e) => {
@@ -125,7 +123,7 @@ function Login() {
           ) : null}
           <Button
             type="submit"
-            className="mt-1"
+            className="mt-1 input-values"
             disabled={
               email === "" ||
               password === "" ||
@@ -137,6 +135,10 @@ function Login() {
           >
             Sign in
           </Button>
+          <hr className="hri"/>
+          <Button variant="outlined" onClick={()=>{
+            navigate("/signup")
+          }}>Create New Account</Button>
         </div>
       </form>
     </React.Fragment>

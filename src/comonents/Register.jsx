@@ -9,7 +9,7 @@ import {
   IconButton,
   FormControl,
 } from "@mui/material";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
@@ -20,14 +20,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import ShowToast from "./ShowToast";
 import { db } from "../firebase";
-import Navbar from "./Navbar";
 
 function Register() {
-  const [hideText, setHideText] = React.useState(false);
+  const [hideText, setHideText] = React.useState("false");
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -48,8 +47,6 @@ function Register() {
     }
   };
 
-  
-
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
     window.scrollTo(0, 1);
@@ -62,7 +59,7 @@ function Register() {
       user = res.user;
       await updateProfile(res.user, {
         displayName: fullName,
-      })
+      });
       await setDoc(doc(db, "users", res.user.uid), {
         fullname: fullName,
         email: email,
@@ -81,10 +78,10 @@ function Register() {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleSignup}>
+      <form className="user-form" onSubmit={handleSignup}>
         <div className="signup-box">
           <div className="signup-icon">
-            <LockOpenIcon />
+            <ContentCopyRoundedIcon className="nav-icon" />
           </div>
           <h2>Sign up</h2>
           {showToast ? (
@@ -94,9 +91,9 @@ function Register() {
               hideToast={null}
             />
           ) : null}
-          <FormControl sx={{ m: 1, width: "25.8ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <TextField
-              className="m-1 setwidth"
+              autoFocus
               label="Full Name"
               type="text"
               onChange={(e) => {
@@ -111,9 +108,8 @@ function Register() {
               }}
             />
           </FormControl>
-          <FormControl sx={{ m: 1, width: "25.8ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <TextField
-              className="m-1 setwidth"
               label="Email"
               type="email"
               onChange={(e) => {
@@ -129,7 +125,7 @@ function Register() {
               }}
             />
           </FormControl>
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <InputLabel htmlFor="password-label">Password</InputLabel>
             <OutlinedInput
               id="password-label"
@@ -152,7 +148,7 @@ function Register() {
             />
           </FormControl>
 
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+          <FormControl className="input-values" variant="outlined">
             <InputLabel htmlFor="confirm-password-label">
               Confirm Password
             </InputLabel>
@@ -183,14 +179,19 @@ function Register() {
             </span>
           ) : null}
           <Button
+            className="input-values"
             disabled={
-              password !== confirmPassword || password === "" || email === ""
+              password !== confirmPassword || password === "" || email === "" || fullName === ""
             }
             type="submit"
             variant="contained"
           >
             Sign up
           </Button>
+          <hr className="hri"/>
+          <Button variant="outlined" onClick={()=>{
+            navigate("/login")
+          }}>Already User</Button>
         </div>
       </form>
     </React.Fragment>
