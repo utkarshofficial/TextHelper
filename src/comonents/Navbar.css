@@ -28,7 +28,12 @@ hr {
     color: aqua;
 }
 
+.btn-close{
+    background-color: white;
+}
+
 .offcanvas {
+    min-width: 250px;
     max-width: fit-content;
     background-color: #212529;
     color: #ffffff;

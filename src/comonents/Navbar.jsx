@@ -20,16 +20,19 @@ import Button from "react-bootstrap/Button";
 import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link, NavLink } from "react-router-dom";
+import { click } from "@testing-library/user-event/dist/click";
 
 function NavbarComponent({ currentUser }) {
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
+  const [showSidebar,setShowSidebar] = React.useState(false);
 
   // * getting logged user details for first time. for changing arrow of dropdown menu
   const toggleArrow = () => {
     {
       Arrow ? setArrow(false) : setArrow(true);
     }
+    {showSidebar ? setShowSidebar(false) : setShowSidebar(true)};
   };
 
   const { dispatch } = React.useContext(AuthContext);
@@ -40,6 +43,7 @@ function NavbarComponent({ currentUser }) {
       dispatch({ type: "LOGOUT" });
       navigate("/");
     });
+    toggleArrow();
   };
 
   // if user logged in
@@ -65,11 +69,11 @@ function NavbarComponent({ currentUser }) {
           {currentUser.email}
         </span>
         <hr className="divider" />
-        <Link to="/" className="nav-link">
+        <Link to="/" className="nav-link" onClick={toggleArrow}>
           <HomeIcon className="nav-icons" />
           Home
         </Link>
-        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder">
+        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder"  onClick={toggleArrow}>
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
@@ -106,20 +110,20 @@ function NavbarComponent({ currentUser }) {
   const ShowLoggedOutNav = () => {
     return (
       <Nav className="justify-content-end flex-grow-1 pe-3">
-        <Link to="/" className="nav-link">
+        <Link to="/" className="nav-link" onClick={toggleArrow}>
           <HomeIcon className="nav-icons" />
           Home
         </Link>
-        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder">
+        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder" onClick={toggleArrow}>
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
         <hr className="divider" />
-        <Link to="/signup" className="nav-link">
+        <Link to="/signup" className="nav-link" onClick={toggleArrow}>
           <AddCircleIcon className="nav-icons" />
           Sign up
         </Link>
-        <Link to="/login" className="nav-link">
+        <Link to="/login" className="nav-link" onClick={toggleArrow}>
           <LoginIcon className="nav-icons" />
           Sign in
         </Link>
@@ -146,9 +150,11 @@ function NavbarComponent({ currentUser }) {
         className="mb-3"
       >
         <Container fluid>
-          <Navbar.Brand href="#home">
-            <ContentCopyRoundedIcon className="nav-icon" />
-            Text Helper
+          <Navbar.Brand>
+            <Link to="/" className="nav-link">
+              <ContentCopyRoundedIcon className="nav-icon" />
+              Text Helper
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle>
             <div
@@ -165,6 +171,7 @@ function NavbarComponent({ currentUser }) {
             </div>
           </Navbar.Toggle>
           <Navbar.Offcanvas
+            show={showSidebar}
             onHide={toggleArrow}
             className="offcanvas"
             id={"offcanvasNavbar-expand-lg"}
