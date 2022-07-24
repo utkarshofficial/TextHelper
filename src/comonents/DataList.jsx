@@ -13,7 +13,7 @@ function DataList( {dataList,removeDataItem,showToast}) {
   });
 
   return (
-    <div className="card" style={{ width: "80%" }}>
+    <div className="card">
       <h5 className="card-header">Clipboard Data</h5>
       <ul className="list-group list-group-flush fw-bold">{showData}</ul>
     </div>

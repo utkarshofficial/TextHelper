@@ -27,8 +27,10 @@ function Paste({ pasteDataItem }) {
 
   // paste manually by ctrl + c
   const PasteManually = (
-    <form className="paste-manual" onSubmit={Submit}>
+    <form className="footer paste-manual" onSubmit={Submit}>
       <TextField
+        fullWidth
+        type='search'
         className="data-input"
         label="Paste data here"
         InputProps={{

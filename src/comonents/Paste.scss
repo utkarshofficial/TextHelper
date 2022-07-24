@@ -5,10 +5,11 @@
     border: 2px solid white;
     margin-top: 10px;
     margin-bottom: 10px;
-    height: 30vh;
+    height: 100px;
     width: 80vw;
     .paste-manual{
         display: flex;
+        width: 80%;
         button{
             padding: 14.5px;
             margin-left: 2px;
@@ -18,5 +19,23 @@
         height: 100%;
         width:
          100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .paste-box{
+        width: 98vw!important;
+        height: 10vh!important;
+        min-height: 10vh!important;
+    }
+    .footer {
+        padding: 10px 10px 5px 10px;
+        height: 70px!important;
+        position: fixed!important;
+        left: 0!important;
+        bottom: 0!important;
+        width: 100%!important;
+        color: white!important;
+        text-align: center!important;
     }
 }

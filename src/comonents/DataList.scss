@@ -5,7 +5,7 @@
     
     ul{
         overflow: scroll;
-        height: calc(100vh - 30vh - 64px);
+        height: 100%;
         li{
             display: flex;
             justify-content: space-between;
@@ -17,6 +17,23 @@
 @media screen and (max-width: 700px) {
     .paste-btn{
         width: 100vw;
+    }
+}
+
+.card{
+    position: absolute;
+    top: 227px;
+    height: calc(100% - 230px)!important;
+    width: 83vw;
+    max-width: 1100px;
+}
+
+@media screen and (max-width: 600px) {
+    .card{
+        position: absolute;
+        top: 64px;
+        height: calc(100% - 134px)!important;
+        width: 98vw!important;
     }
 }
  

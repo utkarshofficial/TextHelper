@@ -143,12 +143,12 @@ function App() {
   const Main = (
     <RequireAuth>
       <div className="box">
-        <Paste pasteDataItem={pasteDataItem} />
         <DataList
           dataList={dataList}
           removeDataItem={removeDataItem}
           showToast={showToast}
         />
+        <Paste pasteDataItem={pasteDataItem} />
         {copied ? (
           <ShowToast
             severity={severity}
