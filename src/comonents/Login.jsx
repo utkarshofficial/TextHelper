@@ -17,7 +17,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import ShowToast from "./ShowToast";
-import Navbar from "./Navbar"
+import Navbar from "./Navbar";
 
 function Login() {
   const [hideText, setHideText] = React.useState("false");
@@ -40,6 +40,7 @@ function Login() {
 
   // for login existing user
   const handleLogin = (e) => {
+    window.scrollTo(0, 1);
     e.preventDefault();
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
@@ -58,7 +59,7 @@ function Login() {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleLogin} style={{marginTop: "80px"}}>
+      <form onSubmit={handleLogin} style={{ marginTop: "80px" }}>
         <div className="signup-box">
           <div className="signup-icon">
             <LockOutlinedIcon />
@@ -73,6 +74,7 @@ function Login() {
           ) : null}
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <TextField
+              autoFocus
               label="Email"
               type="email"
               onChange={(e) => {
@@ -93,6 +95,7 @@ function Login() {
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <InputLabel htmlFor="password-label">Password</InputLabel>
             <OutlinedInput
+              autoFocus
               id="password-label"
               type={hideText ? "password" : "text"}
               onChange={(e) => {

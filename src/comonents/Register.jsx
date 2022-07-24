@@ -52,6 +52,7 @@ function Register() {
 
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
+    window.scrollTo(0, 1);
     e.preventDefault();
     const auth = getAuth();
     var user = null;
