@@ -139,6 +139,12 @@ function App() {
   const RequireAuth = ({ children }) => {
     return User !== null ? children : <Navigate to="/login" />;
   };
+
+  // * Signed out than clear the data
+  const clearDataList = ()=>{
+    setDataList([]);
+    setIsDataListed(false);
+  }
   // where all copy paste done
   const Main = (
     <RequireAuth>
@@ -164,7 +170,7 @@ function App() {
   return (
     <React.Fragment>
       <Router>
-      <Navbar currentUser={currentUser} />
+      <Navbar currentUser={currentUser} clearDataList={clearDataList}/>
         <Routes>
           <Route exact path="/">
             <Route index element={<Home />} />

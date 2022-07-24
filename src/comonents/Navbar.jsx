@@ -22,7 +22,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 import { click } from "@testing-library/user-event/dist/click";
 
-function NavbarComponent({ currentUser }) {
+function NavbarComponent({ currentUser,clearDataList }) {
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
   const [showSidebar,setShowSidebar] = React.useState(false);
@@ -40,6 +40,7 @@ function NavbarComponent({ currentUser }) {
   const SignOut = () => {
     const auth = getAuth();
     signOut(auth).then(() => {
+      clearDataList();
       dispatch({ type: "LOGOUT" });
       navigate("/");
     });
