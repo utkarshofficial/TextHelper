@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Avatar } from "@mui/material";
+import { Avatar,Box,LinearProgress} from "@mui/material";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -19,10 +19,21 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "react-bootstrap/Button";
 import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Link, NavLink } from "react-router-dom";
-import { click } from "@testing-library/user-event/dist/click";
+import { useNavigate, Link ,useLocation} from "react-router-dom";
+
+
 
 function NavbarComponent({ currentUser,clearDataList }) {
+  // * Show Progressbar when ever user changes
+  const [hideProgress,setHideProgress] = React.useState(true);
+  const location = useLocation();
+  // whenever user location change is fired
+  React.useEffect(()=>{
+    setHideProgress(false);
+    setTimeout(()=>{
+      setHideProgress(true);
+    },500)
+  },[location,currentUser]);
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
   const [showSidebar,setShowSidebar] = React.useState(false);
@@ -148,7 +159,7 @@ function NavbarComponent({ currentUser,clearDataList }) {
         bg="dark"
         variant="dark"
         expand="lg"
-        className="mb-3"
+        className=""
       >
         <Container fluid>
           <Navbar.Brand>
@@ -172,7 +183,7 @@ function NavbarComponent({ currentUser,clearDataList }) {
             </div>
           </Navbar.Toggle>
           <Navbar.Offcanvas
-            show={showSidebar}
+            show={showSidebar ? "true" : undefined}
             onHide={toggleArrow}
             className="offcanvas"
             id={"offcanvasNavbar-expand-lg"}
@@ -195,6 +206,9 @@ function NavbarComponent({ currentUser,clearDataList }) {
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
+      <Box sx={{ width: "100%" }} className="progress-bar-box">
+        <LinearProgress hidden={hideProgress} color="secondary"/>
+      </Box>
     </React.Fragment>
   );
 }
