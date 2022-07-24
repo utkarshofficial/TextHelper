@@ -17,6 +17,7 @@ import { AuthContext } from "./context/AuthContext";
 import Navbar from "./comonents/Navbar";
 
 function App() {
+  // * getting current user
   const { currentUser } = React.useContext(AuthContext);
   const User = currentUser;
   // firebase functions
