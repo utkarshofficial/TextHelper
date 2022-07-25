@@ -31,6 +31,7 @@ function Register({ user }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [authError, setAuthError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showToast, setShowToast] = React.useState(false);
   const [showLogo, setShowLogo] = React.useState(true);
@@ -51,36 +52,39 @@ function Register({ user }) {
   // * user already present then navigate to home
   React.useEffect(() => {
     if (user !== null) {
-      navigate("/work");
+      navigate("/");
     }
   });
 
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
-    window.scrollTo(0, 1);
     e.preventDefault();
-    const auth = getAuth();
-    // res - response
-    try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      user = res.user;
-      await updateProfile(res.user, {
-        displayName: fullName,
-      });
-      await setDoc(doc(db, "users", res.user.uid), {
-        fullname: fullName,
-        email: email,
-        password: password,
-        timeStamp: serverTimestamp(),
-      });
-      setShowToast(true);
-      dispatch({ type: "LOGIN", payload: res.user });
-      setTimeout(() => {
-        navigate("/work");
-      }, 400);
-    } catch (err) {
-      setAuthError(true);
+    if (password.length < 6) {
+      setPasswordError(true);
       setShowLogo(false);
+    } else {
+      window.scrollTo(0, 1);
+      const auth = getAuth();
+      // res - response
+      try {
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+        user = res.user;
+        await updateProfile(res.user, {
+          displayName: fullName,
+        });
+        await setDoc(doc(db, "users", res.user.uid), {
+          fullname: fullName,
+          email: email,
+          password: password,
+          timeStamp: serverTimestamp(),
+        });
+        setShowToast(true);
+        dispatch({ type: "LOGIN", payload: res.user });
+        navigate("/work");
+      } catch (err) {
+        setAuthError(true);
+        setShowLogo(false);
+      }
     }
   };
 
@@ -144,6 +148,7 @@ function Register({ user }) {
           <FormControl className="input-values" variant="outlined">
             <InputLabel htmlFor="password-label">Password</InputLabel>
             <OutlinedInput
+              error={passwordError}
               id="password-label"
               type={hideText ? "password" : "text"}
               onChange={(e) => {
@@ -178,8 +183,12 @@ function Register({ user }) {
                 if (authError) {
                   setAuthError(false);
                 }
+                if (password.length > 4) {
+                  setPasswordError(false);
+                  setShowLogo(true);
+                }
               }}
-              error={password !== confirmPassword}
+              error={password !== confirmPassword || passwordError}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -199,13 +208,18 @@ function Register({ user }) {
               user is already registered !
             </span>
           ) : null}
+          {passwordError ? (
+            <span className="text-danger">
+              password must be six characters long!
+            </span>
+          ) : null}
           <Button
             className="input-values"
             disabled={
               password !== confirmPassword ||
               password === "" ||
               email === "" ||
-              fullName === ""
+              fullName === "" || passwordError
             }
             type="submit"
             variant="contained"

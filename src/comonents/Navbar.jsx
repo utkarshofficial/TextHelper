@@ -24,20 +24,16 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 function NavbarComponent({ currentUser, clearDataList }) {
   // * Show Progressbar when ever user changes
   const [hideProgress, setHideProgress] = React.useState(true);
-  const [avatarColor,setAvatarColor] = React.useState("");
   
   const location = useLocation();
   // whenever user location change is fired
   React.useEffect(() => {
-    const avatarColors = ["orange","deeppink","blueviolet","brow","coral","darkcyan"];
-    if(avatarColor==="")
-      setAvatarColor(avatarColors[Math.floor(Math.random() * avatarColors.length)]);
     setHideProgress(false);
     setTimeout(() => {
       setHideProgress(true);
     }, 500);
     
-  }, [location, currentUser,avatarColor]);
+  }, [location, currentUser]);
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
   const [showSidebar, setShowSidebar] = React.useState(false);
@@ -71,7 +67,7 @@ function NavbarComponent({ currentUser, clearDataList }) {
     return (
       <React.Fragment>
         <span className="user-name">{fname}</span>
-        <Avatar className="avatar" sx={{ bgcolor: avatarColor }}>
+        <Avatar className="avatar" sx={{ bgcolor: "orange" }}>
           {fname[0]}
         </Avatar>
       </React.Fragment>

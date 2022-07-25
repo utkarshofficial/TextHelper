@@ -24,6 +24,7 @@ function Login({ user }) {
   const [password, setPassword] = React.useState("");
   const [authError, setAuthError] = React.useState(false);
   const [showToast, setShowToast] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
   // dispatch is used to login
   const { dispatch } = React.useContext(AuthContext);
   // navigate is used to navigate user to home page after login
@@ -40,25 +41,27 @@ function Login({ user }) {
     if (user !== null) {
       navigate("/work");
     }
-  }, [navigate,user]);
+  }, [navigate, user]);
 
   // for login existing user
   const handleLogin = (e) => {
     window.scrollTo(0, 1);
     e.preventDefault();
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch({ type: "LOGIN", payload: user });
-        setShowToast(true);
-        setTimeout(() => {
-          navigate("/work");
-        }, 400);
-      })
-      .catch((error) => {
-        setAuthError(true);
-      });
+    if (password.length < 6) {
+      setPasswordError(true);
+    } else {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          dispatch({ type: "LOGIN", payload: user });
+          setShowToast(true);
+          navigate("/");
+        })
+        .catch((error) => {
+          setAuthError(true);
+        });
+    }
   };
 
   return (
@@ -83,7 +86,7 @@ function Login({ user }) {
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
-                if(authError){
+                if (authError) {
                   setAuthError(false);
                 }
               }}
@@ -106,12 +109,15 @@ function Login({ user }) {
               type={hideText ? "password" : "text"}
               onChange={(e) => {
                 setPassword(e.target.value);
-                if(authError){
+                if (authError) {
                   setAuthError(false);
+                }
+                if(password.length > 4){
+                  setPasswordError(false);
                 }
               }}
               // for showing the red border
-              error={authError}
+              error={authError || passwordError}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -132,6 +138,11 @@ function Login({ user }) {
               Email or Passowrd is wrong !
             </span>
           ) : null}
+          {passwordError ? (
+            <span className="text-danger">
+              password must be six characters long!
+            </span>
+          ) : null}
           <Button
             type="submit"
             className="mt-1 input-values"
@@ -146,7 +157,14 @@ function Login({ user }) {
           >
             Sign in
           </Button>
-          <a target="_blank" rel="noreferrer" href="https://instagram.com/utkarshencoder" className="reset text-primary">Reset your password</a>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://instagram.com/utkarshencoder"
+            className="reset text-primary"
+          >
+            Reset your password
+          </a>
           <hr className="hri" />
           <Button
             variant="outlined"
