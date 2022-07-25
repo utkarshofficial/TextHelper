@@ -5,9 +5,8 @@
     display: flex;
     justify-content: center;
     height: calc(100vh - 58px)!important;
-    background-image: url(../img/bg-img.jpg);
     background-size: cover;
-
+    background: transparent;
     .home-item-container{
         width: 1100px;
         .title-text{

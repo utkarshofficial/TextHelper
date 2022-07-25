@@ -1,8 +1,5 @@
 import React from "react";
 import "./Home.scss";
-import BackImg from "../img/bg-img.jpg";
-import Image from "react-bootstrap/Image";
-import { Container, Box, CssBaseline } from "@mui/material";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";

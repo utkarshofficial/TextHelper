@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Avatar, Box, LinearProgress, Radio } from "@mui/material";
+import { Avatar, Box, LinearProgress } from "@mui/material";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -25,29 +25,31 @@ function NavbarComponent({ currentUser, clearDataList }) {
   // * Show Progressbar when ever user changes
   const [hideProgress, setHideProgress] = React.useState(true);
   const [avatarColor,setAvatarColor] = React.useState("");
-  const avatarColors = ["orange","deeppink","blueviolet","brow","coral","darkcyan"];
+  
   const location = useLocation();
   // whenever user location change is fired
   React.useEffect(() => {
+    const avatarColors = ["orange","deeppink","blueviolet","brow","coral","darkcyan"];
     if(avatarColor==="")
       setAvatarColor(avatarColors[Math.floor(Math.random() * avatarColors.length)]);
     setHideProgress(false);
     setTimeout(() => {
       setHideProgress(true);
     }, 500);
-  }, [location, currentUser]);
+    
+  }, [location, currentUser,avatarColor]);
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
   const [showSidebar, setShowSidebar] = React.useState(false);
 
   // * getting logged user details for first time. for changing arrow of dropdown menu
   const toggleArrow = () => {
-    {
+    
       Arrow ? setArrow(false) : setArrow(true);
-    }
-    {
+    
+    
       showSidebar ? setShowSidebar(false) : setShowSidebar(true);
-    }
+    
   };
 
   const { dispatch } = React.useContext(AuthContext);
