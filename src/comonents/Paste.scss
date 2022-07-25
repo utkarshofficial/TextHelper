@@ -7,6 +7,10 @@
     margin-bottom: 10px;
     height: 100px;
     width: 80vw;
+    .input-btn{
+        width: 100%!important;
+        height: 100%!important;
+    }
     .paste-manual{
         display: flex;
         width: 80%;
@@ -15,20 +19,41 @@
             margin-left: 2px;
         }
     }
-    .paste-btn{
-        height: 100%;
-        width:
-         100%;
+    div{
+        .paste-btn{
+            height: 100%;
+            width:
+             100%;
+        }
     }
 }
 
+.pasteInput-label{
+    color: #ff00c8!important;
+    font-weight: bolder;
+}
+
+.data-input{
+    font-weight: bolder;
+    color: #ff00c8!important;
+    background-color: #00000094!important;
+    border-radius: 4px;
+}
+
+body{
+    background-image: none;
+}
+
+.textInputCopy-icon{
+    fill: white!important;
+}
+
+.textInput{
+    color: white;
+}
+
 @media screen and (max-width: 600px) {
-    .paste-box{
-        width: 98vw!important;
-        height: 10vh!important;
-        min-height: 10vh!important;
-    }
-    .footer {
+    .text-input{
         padding: 10px 10px 5px 10px;
         height: 70px!important;
         position: fixed!important;
@@ -37,5 +62,8 @@
         width: 100%!important;
         color: white!important;
         text-align: center!important;
+    }
+    .paste-btn{
+        
     }
 }

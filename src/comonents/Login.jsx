@@ -48,7 +48,7 @@ function Login() {
         const user = userCredential.user;
         dispatch({ type: "LOGIN", payload: user });
         setTimeout(() => {
-          navigate("/main");
+          navigate("/work");
         }, 2000);
       })
       .catch((error) => {

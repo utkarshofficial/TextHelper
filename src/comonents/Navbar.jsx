@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Avatar,Box,LinearProgress} from "@mui/material";
+import { Avatar, Box, LinearProgress, Radio } from "@mui/material";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -19,31 +19,31 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "react-bootstrap/Button";
 import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Link ,useLocation} from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
-
-
-function NavbarComponent({ currentUser,clearDataList }) {
+function NavbarComponent({ currentUser, clearDataList }) {
   // * Show Progressbar when ever user changes
-  const [hideProgress,setHideProgress] = React.useState(true);
+  const [hideProgress, setHideProgress] = React.useState(true);
   const location = useLocation();
   // whenever user location change is fired
-  React.useEffect(()=>{
+  React.useEffect(() => {
     setHideProgress(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       setHideProgress(true);
-    },500)
-  },[location,currentUser]);
+    }, 500);
+  }, [location, currentUser]);
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
-  const [showSidebar,setShowSidebar] = React.useState(false);
+  const [showSidebar, setShowSidebar] = React.useState(false);
 
   // * getting logged user details for first time. for changing arrow of dropdown menu
   const toggleArrow = () => {
     {
       Arrow ? setArrow(false) : setArrow(true);
     }
-    {showSidebar ? setShowSidebar(false) : setShowSidebar(true)};
+    {
+      showSidebar ? setShowSidebar(false) : setShowSidebar(true);
+    }
   };
 
   const { dispatch } = React.useContext(AuthContext);
@@ -85,7 +85,15 @@ function NavbarComponent({ currentUser,clearDataList }) {
           <HomeIcon className="nav-icons" />
           Home
         </Link>
-        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder"  onClick={toggleArrow}>
+        <Link to="/work" className="nav-link" onClick={toggleArrow}>
+          <ContentCopyRoundedIcon className="nav-icons" />
+          Work
+        </Link>
+        <Nav.Link
+          target="_blank"
+          href="https://instagram.com/utkarshencoder"
+          onClick={toggleArrow}
+        >
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
@@ -126,7 +134,11 @@ function NavbarComponent({ currentUser,clearDataList }) {
           <HomeIcon className="nav-icons" />
           Home
         </Link>
-        <Nav.Link target="_blank" href="https://instagram.com/utkarshencoder" onClick={toggleArrow}>
+        <Nav.Link
+          target="_blank"
+          href="https://instagram.com/utkarshencoder"
+          onClick={toggleArrow}
+        >
           <SupervisedUserCircleIcon className="nav-icons" />
           Contact Us
         </Nav.Link>
@@ -154,13 +166,7 @@ function NavbarComponent({ currentUser,clearDataList }) {
 
   return (
     <React.Fragment>
-      <Navbar
-        sticky="top"
-        bg="dark"
-        variant="dark"
-        expand="lg"
-        className=""
-      >
+      <Navbar sticky="top" bg="dark" variant="dark" expand="lg" id="navBar">
         <Container fluid>
           <Navbar.Brand>
             <Link to="/" className="nav-link">
@@ -188,7 +194,7 @@ function NavbarComponent({ currentUser,clearDataList }) {
             className="offcanvas"
             id={"offcanvasNavbar-expand-lg"}
             aria-labelledby={"offcanvasNavbarLabel-expand-lg"}
-            placement="start"
+            placement="end"
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={"offcanvasNavbarLabel-expand-lg"}>
@@ -207,7 +213,7 @@ function NavbarComponent({ currentUser,clearDataList }) {
         </Container>
       </Navbar>
       <Box sx={{ width: "100%" }} className="progress-bar-box">
-        <LinearProgress hidden={hideProgress} color="secondary"/>
+        <LinearProgress hidden={hideProgress} color="secondary" />
       </Box>
     </React.Fragment>
   );

@@ -14,18 +14,17 @@
     }
 }
 
-@media screen and (max-width: 700px) {
-    .paste-btn{
-        width: 100vw;
-    }
-}
-
 .card{
     position: absolute;
     top: 227px;
     height: calc(100% - 230px)!important;
     width: 83vw;
     max-width: 1100px;
+    .card-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 @media screen and (max-width: 600px) {

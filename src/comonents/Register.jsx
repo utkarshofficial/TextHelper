@@ -69,7 +69,7 @@ function Register() {
       setShowToast(true);
       dispatch({ type: "LOGIN", payload: res.user });
       setTimeout(() => {
-        navigate("/main");
+        navigate("/work");
       }, 2000);
     } catch (err) {
       setAuthError(true);
@@ -115,7 +115,6 @@ function Register() {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              autoComplete="current-password"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

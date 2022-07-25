@@ -87,39 +87,20 @@ function App() {
     addDataFire(newDataList);
     hideToast();
   };
-
+  // getting data that is paste/input by user
   const pasteDataItem = (pasteItem) => {
-    let newDataList = [...dataList];
-
-    // pasted manually
-    if (!navigator.clipboard && pasteItem !== "") {
-      let availIndex = newDataList.indexOf(pasteItem);
-      if (availIndex !== -1) {
-        let availableData = newDataList.splice(availIndex, 1).toString();
-        newDataList.unshift(availableData);
-        addDataFire(newDataList);
-        return;
-      }
-      // if not available then simply add it
-      newDataList.unshift(pasteItem);
-      addDataFire(newDataList);
-    } else {
-      // paste by button
-      navigator.clipboard.readText().then((text) => {
-        // checking that if data already available
-        // then don't add just remove and add again
-        let availIndex = newDataList.indexOf(text);
-        if (availIndex !== -1) {
-          let availableData = newDataList.splice(availIndex, 1).toString();
-          newDataList.unshift(availableData);
-          addDataFire(newDataList);
-          return;
-        }
-        // if not available then simply add it
-        newDataList.unshift(text);
-        addDataFire(newDataList);
-      });
+    // checking pasteItem is empty or not
+    if(pasteItem.trim() === ""){
+      return;
     }
+    let newDataList = [...dataList];
+    // if pasteItem is already in list then push it on top
+    if(newDataList.indexOf(pasteItem) !== -1){
+      newDataList.splice(newDataList.indexOf(pasteItem),1);
+    }
+    newDataList.unshift(pasteItem);
+    // now sending new datalist to firebase
+    addDataFire(newDataList);
   };
 
   // for showing message and color of toast
@@ -147,15 +128,29 @@ function App() {
     setIsDataListed(false);
   }
   // where all copy paste done
-  const Main = (
+  // * Toggle button for paste mode
+  const [pasteMode, setPasteMode] = React.useState("input");
+
+  const changePasteMode = (event, newMode) => {
+    if(navigator.clipboard){
+      setPasteMode(newMode);
+    }
+  };
+
+  const Work = (
     <RequireAuth>
       <div className="box">
         <DataList
           dataList={dataList}
           removeDataItem={removeDataItem}
           showToast={showToast}
+          changePasteMode={changePasteMode}
+          pasteMode={pasteMode}
         />
-        <Paste pasteDataItem={pasteDataItem} />
+        <Paste 
+          pasteDataItem={pasteDataItem}
+          pasteMode={pasteMode}
+        />
         {copied ? (
           <ShowToast
             severity={severity}
@@ -175,7 +170,7 @@ function App() {
         <Routes>
           <Route exact path="/">
             <Route index element={<Home />} />
-            <Route path="main" element={Main} />
+            <Route path="work" element={Work} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Register />} />
           </Route>
@@ -184,5 +179,5 @@ function App() {
     </React.Fragment>
   );
 }
-
+ 
 export default App;
