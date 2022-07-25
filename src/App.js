@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import DataList from "./comonents/DataList";
 import Paste from "./comonents/Paste";
 import ShowToast from "./comonents/ShowToast";
@@ -172,6 +172,7 @@ function App() {
             <Route path="work" element={<Work/>} />
             <Route path="login" element={<Login user={User}/>} />
             <Route path="signup" element={<Register user={User}/>} />
+            <Route path="*" element={<Navigate to="/"/>}/>
           </Route>
         </Routes>
       </Router>
