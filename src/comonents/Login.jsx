@@ -146,6 +146,7 @@ function Login({ user }) {
           >
             Sign in
           </Button>
+          <a target="_blank" href="https://instagram.com/utkarshencoder" className="reset text-primary">Reset your password</a>
           <hr className="hri" />
           <Button
             variant="outlined"
