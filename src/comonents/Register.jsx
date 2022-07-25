@@ -25,7 +25,7 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import ShowToast from "./ShowToast";
 import { db } from "../firebase";
 
-function Register() {
+function Register({ user }) {
   const [hideText, setHideText] = React.useState("false");
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -33,6 +33,7 @@ function Register() {
   const [authError, setAuthError] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showToast, setShowToast] = React.useState(false);
+  const [showLogo, setShowLogo] = React.useState(true);
 
   // for savgin user to authcontext
   // dispatch is destructured
@@ -46,6 +47,13 @@ function Register() {
       setHideText(true);
     }
   };
+
+  // * user already present then navigate to home
+  React.useEffect(() => {
+    if (user !== null) {
+      navigate("/work");
+    }
+  });
 
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
@@ -70,9 +78,10 @@ function Register() {
       dispatch({ type: "LOGIN", payload: res.user });
       setTimeout(() => {
         navigate("/work");
-      }, 2000);
+      }, 400);
     } catch (err) {
       setAuthError(true);
+      setShowLogo(false);
     }
   };
 
@@ -80,9 +89,11 @@ function Register() {
     <React.Fragment>
       <form className="user-form" onSubmit={handleSignup}>
         <div className="signup-box">
-          <div className="signup-icon">
-            <ContentCopyRoundedIcon className="nav-icon" />
-          </div>
+          {showLogo ? (
+            <div className="signup-icon">
+              <ContentCopyRoundedIcon className="nav-icon" />
+            </div>
+          ) : null}
           <h2>Sign up</h2>
           {showToast ? (
             <ShowToast
@@ -98,6 +109,9 @@ function Register() {
               type="text"
               onChange={(e) => {
                 setFullName(e.target.value);
+                if (authError) {
+                  setAuthError(false);
+                }
               }}
               InputProps={{
                 startAdornment: (
@@ -112,8 +126,12 @@ function Register() {
             <TextField
               label="Email"
               type="email"
+              error={authError}
               onChange={(e) => {
                 setEmail(e.target.value);
+                if (authError) {
+                  setAuthError(false);
+                }
               }}
               InputProps={{
                 startAdornment: (
@@ -131,6 +149,9 @@ function Register() {
               type={hideText ? "password" : "text"}
               onChange={(e) => {
                 setPassword(e.target.value);
+                if (authError) {
+                  setAuthError(false);
+                }
               }}
               endAdornment={
                 <InputAdornment position="end">
@@ -146,7 +167,6 @@ function Register() {
               label="Password"
             />
           </FormControl>
-
           <FormControl className="input-values" variant="outlined">
             <InputLabel htmlFor="confirm-password-label">
               Confirm Password
@@ -156,6 +176,9 @@ function Register() {
               type={hideText ? "password" : "text"}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
+                if (authError) {
+                  setAuthError(false);
+                }
               }}
               error={password !== confirmPassword}
               endAdornment={
@@ -173,24 +196,32 @@ function Register() {
             />
           </FormControl>
           {authError ? (
-            <span className="p-1 badge mb-2 text-bg-danger">
+            <span className="fw-bold text-danger">
               user is already registered !
             </span>
           ) : null}
           <Button
             className="input-values"
             disabled={
-              password !== confirmPassword || password === "" || email === "" || fullName === ""
+              password !== confirmPassword ||
+              password === "" ||
+              email === "" ||
+              fullName === ""
             }
             type="submit"
             variant="contained"
           >
             Sign up
           </Button>
-          <hr className="hri"/>
-          <Button variant="outlined" onClick={()=>{
-            navigate("/login")
-          }}>Already User</Button>
+          <hr className="hri" />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Already User
+          </Button>
         </div>
       </form>
     </React.Fragment>

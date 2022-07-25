@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import ShowToast from "./ShowToast";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
-function Login() {
+function Login({ user }) {
   const [hideText, setHideText] = React.useState("false");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -36,6 +36,11 @@ function Login() {
       setHideText(true);
     }
   };
+  React.useEffect(() => {
+    if (user !== null) {
+      navigate("/work");
+    }
+  }, []);
 
   // for login existing user
   const handleLogin = (e) => {
@@ -44,12 +49,12 @@ function Login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setShowToast(true);
         const user = userCredential.user;
         dispatch({ type: "LOGIN", payload: user });
+        setShowToast(true);
         setTimeout(() => {
           navigate("/work");
-        }, 2000);
+        }, 400);
       })
       .catch((error) => {
         setAuthError(true);
@@ -61,7 +66,7 @@ function Login() {
       <form className="user-form" onSubmit={handleLogin}>
         <div className="signup-box login-box">
           <div className="signup-icon">
-          <ContentCopyRoundedIcon className="nav-icon" />
+            <ContentCopyRoundedIcon className="nav-icon" />
           </div>
           <h2>Sign in</h2>
           {showToast ? (
@@ -78,6 +83,9 @@ function Login() {
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
+                if(authError){
+                  setAuthError(false);
+                }
               }}
               // for showing the red border
               error={authError}
@@ -98,6 +106,9 @@ function Login() {
               type={hideText ? "password" : "text"}
               onChange={(e) => {
                 setPassword(e.target.value);
+                if(authError){
+                  setAuthError(false);
+                }
               }}
               // for showing the red border
               error={authError}
@@ -117,8 +128,8 @@ function Login() {
           </FormControl>
 
           {authError ? (
-            <span className="p-1 badge mb-2 text-bg-danger">
-              email or passowrd is wrong !
+            <span className="fw-bold m-2 text-danger">
+              Email or Passowrd is wrong !
             </span>
           ) : null}
           <Button
@@ -135,10 +146,15 @@ function Login() {
           >
             Sign in
           </Button>
-          <hr className="hri"/>
-          <Button variant="outlined" onClick={()=>{
-            navigate("/signup")
-          }}>Create New Account</Button>
+          <hr className="hri" />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Create New Account
+          </Button>
         </div>
       </form>
     </React.Fragment>

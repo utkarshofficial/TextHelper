@@ -56,7 +56,7 @@ function App() {
   // firebase functions end ------------- //
   const [dataList, setDataList] = React.useState([]);
   // condition for redering list
-  if (!isDataListed && User!==null) {
+  if (!isDataListed && User !== null) {
     readDataFire();
     // if (dataList.length === 0) {
     //   let newData = ["example"];
@@ -90,13 +90,13 @@ function App() {
   // getting data that is paste/input by user
   const pasteDataItem = (pasteItem) => {
     // checking pasteItem is empty or not
-    if(pasteItem.trim() === ""){
+    if (pasteItem.trim() === "") {
       return;
     }
     let newDataList = [...dataList];
     // if pasteItem is already in list then push it on top
-    if(newDataList.indexOf(pasteItem) !== -1){
-      newDataList.splice(newDataList.indexOf(pasteItem),1);
+    if (newDataList.indexOf(pasteItem) !== -1) {
+      newDataList.splice(newDataList.indexOf(pasteItem), 1);
     }
     newDataList.unshift(pasteItem);
     // now sending new datalist to firebase
@@ -123,61 +123,60 @@ function App() {
   };
 
   // * Signed out than clear the data
-  const clearDataList = ()=>{
+  const clearDataList = () => {
     setDataList([]);
     setIsDataListed(false);
-  }
+  };
   // where all copy paste done
   // * Toggle button for paste mode
   const [pasteMode, setPasteMode] = React.useState("input");
 
   const changePasteMode = (event, newMode) => {
-    if(navigator.clipboard){
+    if (navigator.clipboard) {
       setPasteMode(newMode);
     }
   };
 
-  const Work = (
-    <RequireAuth>
-      <div className="box">
-        <DataList
-          dataList={dataList}
-          removeDataItem={removeDataItem}
-          showToast={showToast}
-          changePasteMode={changePasteMode}
-          pasteMode={pasteMode}
-        />
-        <Paste 
-          pasteDataItem={pasteDataItem}
-          pasteMode={pasteMode}
-        />
-        {copied ? (
-          <ShowToast
-            severity={severity}
-            message={message}
-            hideToast={hideToast}
-            undo={undo}
+  const Work = () => {
+    return (
+      <RequireAuth>
+        <div className="box">
+          <DataList
+            dataList={dataList}
+            removeDataItem={removeDataItem}
+            showToast={showToast}
+            changePasteMode={changePasteMode}
+            pasteMode={pasteMode}
           />
-        ) : null}
-      </div>
-    </RequireAuth>
-  );
+          <Paste pasteDataItem={pasteDataItem} pasteMode={pasteMode} />
+          {copied ? (
+            <ShowToast
+              severity={severity}
+              message={message}
+              hideToast={hideToast}
+              undo={undo}
+            />
+          ) : null}
+        </div>
+      </RequireAuth>
+    );
+  };
 
   return (
     <React.Fragment>
       <Router>
-      <Navbar currentUser={currentUser} clearDataList={clearDataList}/>
+        <Navbar currentUser={currentUser} clearDataList={clearDataList} />
         <Routes>
           <Route exact path="/">
             <Route index element={<Home />} />
-            <Route path="work" element={Work} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Register />} />
+            <Route path="work" element={<Work/>} />
+            <Route path="login" element={<Login user={User}/>} />
+            <Route path="signup" element={<Register user={User}/>} />
           </Route>
         </Routes>
       </Router>
     </React.Fragment>
   );
 }
- 
+
 export default App;
