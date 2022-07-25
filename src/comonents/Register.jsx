@@ -60,7 +60,6 @@ function Register({ user }) {
     window.scrollTo(0, 1);
     e.preventDefault();
     const auth = getAuth();
-    var user = null;
     // res - response
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);

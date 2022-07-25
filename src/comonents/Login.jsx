@@ -40,7 +40,7 @@ function Login({ user }) {
     if (user !== null) {
       navigate("/work");
     }
-  }, []);
+  }, [navigate,user]);
 
   // for login existing user
   const handleLogin = (e) => {
@@ -146,7 +146,7 @@ function Login({ user }) {
           >
             Sign in
           </Button>
-          <a target="_blank" href="https://instagram.com/utkarshencoder" className="reset text-primary">Reset your password</a>
+          <a target="_blank" rel="noreferrer" href="https://instagram.com/utkarshencoder" className="reset text-primary">Reset your password</a>
           <hr className="hri" />
           <Button
             variant="outlined"
