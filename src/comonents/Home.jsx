@@ -17,8 +17,9 @@ function Home() {
             Developed by <span>Utkarsh Sharma</span>
           </p>
           <div>
-            <a href="https://github.com/utkarshofficial">GitHub</a>
-            <a href="https://instagram.com/utkarshencoder">Instagram</a>
+            <a rel="noreferrer" href="https://github.com/utkarshofficial">GitHub</a>
+            <a rel="noreferrer" href="https://instagram.com/utkarshencoder">Instagram</a>
+            <a rel="noreferrer" href="https://www.linkedin.com/in/-utkarsh-sharma/">LinkedIn</a>
           </div>
         </div>
       </footer>

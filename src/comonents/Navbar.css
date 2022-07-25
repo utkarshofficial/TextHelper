@@ -18,6 +18,19 @@
     color: cornflowerblue;
 }
 
+.text-yellow{
+    color: rgb(255, 200, 0)!important;
+}
+
+.mp-0{
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.text-yellow2{
+    color: rgb(164, 128, 0)!important;
+}
+
 .fullname {
     display: block;
     margin-top: 10px;

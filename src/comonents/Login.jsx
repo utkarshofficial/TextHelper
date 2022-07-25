@@ -39,7 +39,7 @@ function Login({ user }) {
   };
   React.useEffect(() => {
     if (user !== null) {
-      navigate("/work");
+      navigate("/");
     }
   }, [navigate, user]);
 
@@ -56,7 +56,7 @@ function Login({ user }) {
           const user = userCredential.user;
           dispatch({ type: "LOGIN", payload: user });
           setShowToast(true);
-          navigate("/");
+          navigate("/work");
         })
         .catch((error) => {
           setAuthError(true);

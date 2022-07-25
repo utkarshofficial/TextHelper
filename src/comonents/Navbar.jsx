@@ -100,9 +100,19 @@ function NavbarComponent({ currentUser, clearDataList }) {
           Contact Us
         </Nav.Link>
         <hr className="divider" />
-        <Nav.Link className="fullname" onClick={SignOut}>
+        <Nav.Link className="fullname mp-0" onClick={SignOut}>
           <LogoutIcon className="nav-icons" />
           Sign Out
+        </Nav.Link>
+        <hr className="divider" />
+        <Nav.Link className="fullname mp-0 text-yellow2">
+          🔥Developer
+        </Nav.Link>
+        <Nav.Link className="fullname mp-0 text-yellow"
+          target="_blank"
+          href="https://instagram.com/utkarshencoder"
+          onClick={toggleArrow}>
+          Utkarsh Sharma
         </Nav.Link>
         <Button variant="dark">
           <NavDropdown
@@ -153,6 +163,16 @@ function NavbarComponent({ currentUser, clearDataList }) {
           <LoginIcon className="nav-icons" />
           Sign in
         </Link>
+        <hr className="divider" />
+        <Nav.Link className="fullname mp-0 text-yellow2">
+          🔥Developer
+        </Nav.Link>
+        <Nav.Link className="fullname mp-0 text-yellow"
+          target="_blank"
+          href="https://instagram.com/utkarshencoder"
+          onClick={toggleArrow}>
+          Utkarsh Sharma
+        </Nav.Link>
       </Nav>
     );
   };
