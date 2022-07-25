@@ -63,7 +63,6 @@ function Data({ data, removeDataItem, index, showToast }) {
       </span>
     );
   }
-
   return (
     <li className="list-group-item textAndBtn">
       <div className="text-item">

@@ -92,17 +92,17 @@ function App() {
   const pasteDataItem = (pasteItem) => {
     // checking pasteItem is empty or not
     if (pasteItem.trim() === "") {
-      showToast("Copy / Type something first !","warning")
-      return;
+      showToast("Copy / Type something first !", "warning");
+    } else {
+      let newDataList = [...dataList];
+      // if pasteItem is already in list then push it on top
+      if (newDataList.indexOf(pasteItem) !== -1) {
+        newDataList.splice(newDataList.indexOf(pasteItem), 1);
+      }
+      newDataList.unshift(pasteItem);
+      // now sending new datalist to firebase
+      addDataFire(newDataList);
     }
-    let newDataList = [...dataList];
-    // if pasteItem is already in list then push it on top
-    if (newDataList.indexOf(pasteItem) !== -1) {
-      newDataList.splice(newDataList.indexOf(pasteItem), 1);
-    }
-    newDataList.unshift(pasteItem);
-    // now sending new datalist to firebase
-    addDataFire(newDataList);
   };
 
   // *for showing message and color of toast
@@ -171,10 +171,10 @@ function App() {
         <Routes>
           <Route exact path="/">
             <Route index element={<Home />} />
-            <Route path="work" element={<Work/>} />
-            <Route path="login" element={<Login user={User}/>} />
-            <Route path="signup" element={<Register user={User}/>} />
-            <Route path="*" element={<Navigate to="/"/>}/>
+            <Route path="work" element={<Work />} />
+            <Route path="login" element={<Login user={User} />} />
+            <Route path="signup" element={<Register user={User} />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>
       </Router>
