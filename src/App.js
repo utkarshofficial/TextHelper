@@ -87,10 +87,12 @@ function App() {
     addDataFire(newDataList);
     hideToast();
   };
-  // getting data that is paste/input by user
+
+  //* getting data that is paste/input by user
   const pasteDataItem = (pasteItem) => {
     // checking pasteItem is empty or not
     if (pasteItem.trim() === "") {
+      showToast("Copy / Type something first !","warning")
       return;
     }
     let newDataList = [...dataList];
@@ -103,7 +105,7 @@ function App() {
     addDataFire(newDataList);
   };
 
-  // for showing message and color of toast
+  // *for showing message and color of toast
   const showToast = (messageToShow, severityToShow) => {
     setMessage(messageToShow);
     setSeverity(severityToShow);
