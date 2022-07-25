@@ -6,11 +6,11 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 function DataList({ dataList, removeDataItem, showToast,pasteMode,changePasteMode }) {
-  const showData = dataList.map((data, i) => {
+  const showData = dataList.map((data,i) => {
     return (
       <Data
         data={data}
-        key={i}
+        key={data}
         index={i}
         removeDataItem={removeDataItem}
         showToast={showToast}
