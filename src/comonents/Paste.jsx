@@ -37,6 +37,7 @@ function Paste({ pasteDataItem, pasteMode }) {
       <FormControl focused fullWidth variant="outlined">
       <InputLabel  className="pasteInput-label" htmlFor="search-label">Paste data here</InputLabel>
       <OutlinedInput
+        placeholder="Text / Link"
         id="search-label"
         type="search"
         className="data-input"

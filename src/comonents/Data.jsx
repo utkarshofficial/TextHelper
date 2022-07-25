@@ -71,7 +71,7 @@ function Data({ data, removeDataItem, index, showToast }) {
         {/* Calling readmore if limit breaks */}
         {(data.length > currentLimit) ? <span onClick={readMore}>...more</span> : null}
         {/* Calling show less after biger text */}
-        {showLess ? <span onClick={readLess}>...less</span> : null}
+        {showLess ? <span onClick={readLess}> ...less</span> : null}
       </div>
 
       <ButtonGroup variant="text" aria-label="text button group">

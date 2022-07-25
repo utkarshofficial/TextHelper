@@ -2,11 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid white;
+    // border: 2px solid white;
     margin-top: 10px;
     margin-bottom: 10px;
     height: 100px;
-    width: 80vw;
+    width: 83vw;
+    max-width: 1100px;
     .input-btn{
         width: 100%!important;
         height: 100%;

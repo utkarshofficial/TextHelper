@@ -4,7 +4,7 @@
     align-items: center;
     
     ul{
-        overflow: scroll;
+        overflow-y: scroll;
         height: 100%;
         li{
             display: flex;
@@ -17,8 +17,8 @@
 
 .card{
     position: absolute;
-    top: 227px;
-    height: calc(100% - 230px)!important;
+    top: 190px;
+    height: calc(100% - 195px)!important;
     width: 83vw;
     max-width: 1100px;
     .card-header{
