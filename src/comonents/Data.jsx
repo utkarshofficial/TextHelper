@@ -61,9 +61,15 @@ function Data({ data, removeDataItem, index, showToast }) {
   // link filttering
   if (data.includes("http://") || data.includes("https://")) {
     dataFirst = (
-      <Link href={data} underline="hover">
+      <Link target="_blank"href={data} underline="hover">
         {data}
       </Link>
+    );
+  }else if(data.includes("://")){
+    dataFirst = (
+      <span className="text-primary fw-bold">
+        {data}
+      </span>
     );
   }
 
