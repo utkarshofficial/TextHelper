@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import ShowToast from "./ShowToast";
 import { db } from "../firebase";
+import { useProgressBarContext } from "../context/ProgressBarContext";
 
 function Register({ user }) {
   const [hideText, setHideText] = React.useState("false");
@@ -35,6 +36,7 @@ function Register({ user }) {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showToast, setShowToast] = React.useState(false);
   const [showLogo, setShowLogo] = React.useState(true);
+  const {setHideProgress} = useProgressBarContext()
 
   // for savgin user to authcontext
   // dispatch is destructured
@@ -59,9 +61,11 @@ function Register({ user }) {
   // for adding new user and storing data on firestore
   const handleSignup = async (e) => {
     e.preventDefault();
+    setHideProgress(false)
     if (password.length < 6) {
       setPasswordError(true);
       setShowLogo(false);
+      setHideProgress(true)
     } else {
       window.scrollTo(0, 1);
       const auth = getAuth();
@@ -79,8 +83,9 @@ function Register({ user }) {
           timeStamp: serverTimestamp(),
         });
         setShowToast(true);
-        dispatch({ type: "LOGIN", payload: res.user });
+        await dispatch({ type: "LOGIN", payload: res.user });
         navigate("/work");
+        setHideProgress(true)
       } catch (err) {
         setAuthError(true);
         setShowLogo(false);

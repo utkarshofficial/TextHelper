@@ -67,6 +67,10 @@ hr {
     display: none;
 }
 
+.progress-bar-box{
+    position: absolute;
+}
+
 @media (min-width: 992px) {
     .container-fluid {
         max-width: 1100px!important;

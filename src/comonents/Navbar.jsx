@@ -19,21 +19,22 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "react-bootstrap/Button";
 import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useProgressBarContext } from "../context/ProgressBarContext";
 
 function NavbarComponent({ currentUser, clearDataList }) {
   // * Show Progressbar when ever user changes
-  const [hideProgress, setHideProgress] = React.useState(true);
-  
-  const location = useLocation();
-  // whenever user location change is fired
-  React.useEffect(() => {
-    setHideProgress(false);
-    setTimeout(() => {
-      setHideProgress(true);
-    }, 500);
+  const {hideProgress, } = useProgressBarContext()
     
-  }, [location, currentUser]);
+  // const location = useLocation();
+  // whenever user location change is fired
+  // React.useEffect(() => {
+  //   setHideProgress(false);
+  //   setTimeout(() => {
+  //     setHideProgress(true);
+  //   }, 500);
+    
+  // }, [location, currentUser, setHideProgress]);
   // for arrow of dropdown menu
   const [Arrow, setArrow] = React.useState(true);
   const [showSidebar, setShowSidebar] = React.useState(false);
@@ -193,7 +194,7 @@ function NavbarComponent({ currentUser, clearDataList }) {
           <Navbar.Brand>
             <Link to="/" className="nav-link">
               <ContentCopyRoundedIcon className="nav-icon" />
-              Text Helper
+              Text Keeper
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle>

@@ -1,6 +1,7 @@
 body {
     box-sizing: border-box;
     font-family: 'Nunito', sans-serif;
-    background-image: url(https://textherlper.netlify.app/static/media/bg-img.74b9db733735005d474a.jpg);
+    /* background-image: url(https://textherlper.netlify.app/static/media/bg-img.74b9db733735005d474a.jpg); */
     background-size: cover;
+    background: linear-gradient(to right, #141e30, #243b55)!important;
 }

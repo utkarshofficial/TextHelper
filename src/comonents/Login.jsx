@@ -17,6 +17,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ShowToast from "./ShowToast";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import { useProgressBarContext } from "../context/ProgressBarContext";
 
 function Login({ user }) {
   const [hideText, setHideText] = React.useState("false");
@@ -25,6 +26,8 @@ function Login({ user }) {
   const [authError, setAuthError] = React.useState(false);
   const [showToast, setShowToast] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
+  const {setHideProgress} = useProgressBarContext()
+
   // dispatch is used to login
   const { dispatch } = React.useContext(AuthContext);
   // navigate is used to navigate user to home page after login
@@ -44,19 +47,21 @@ function Login({ user }) {
   }, [navigate, user]);
 
   // for login existing user
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     window.scrollTo(0, 1);
+    setHideProgress(false)
     e.preventDefault();
     if (password.length < 6) {
       setPasswordError(true);
     } else {
       const auth = getAuth();
-      signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
           dispatch({ type: "LOGIN", payload: user });
           setShowToast(true);
           navigate("/work");
+          setHideProgress(true)
         })
         .catch((error) => {
           setAuthError(true);
